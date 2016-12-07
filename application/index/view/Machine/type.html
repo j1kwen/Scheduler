@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+{include file="Public:header" /}
+</head>
+<body>
+{include file="Public:topbar" /}
+<div class="container">
+{if condition="$isadd"}
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<strong>添加成功！</strong>已成功添加课程类型 - {$add_name|default=''}
+	</div>
+{/if}
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			课程类型列表
+		</div>		
+		<div class="panel-body">
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addModal">
+				<span class="glyphicon glyphicon-plus"></span>&nbsp;新增
+			</button>
+		</div>
+		<!-- Table -->
+		<table class="table table-bordered text-center table-responsive table-hover">
+			<thead>
+			</thead>
+				<tr>
+					<th>编号</th>
+					<th>课程类型名称</th>
+					<th>描述</th>
+					<th>操作</th>
+				</tr>
+			<tbody>
+{foreach $list as $item}
+				<tr>
+					<td>{$item.id}</td>
+					<td>{$item.name}</td>
+					<td>{$item.description}</td>
+					<td><a href="#">编辑</a></td>
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="addModalLabel">添加课程类型</h4>
+	      </div>
+	      <form role="form" class="form-horizontal" action="{:url('index/Machine/type','')}" method="POST">
+	      <div class="modal-body">
+	      	<div class="alert alert-warning" role="alert"><strong>注意！</strong>课程类型添加后不可删除，只能修改！</div>
+			  <div class="form-group has-feedback">
+			    <label for="inputName" class="col-sm-3 control-label">课程类型名称</label>
+			    <div class="col-sm-8">
+			    	<input type="text" class="form-control" name="name" id="inputName" placeholder="输入类型名称">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputDes" class="col-sm-3 control-label">描述</label>
+			    <div class="col-sm-8">
+			    	<input type="text" class="form-control" name="description" id="inputDes" placeholder="描述该课程类型">
+			  	</div>
+			  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="submit" class="btn btn-primary">保存</button>
+	      </div>
+		</form>
+	    </div>
+	  </div>
+	</div>
+</div>
+{include file="Public:footer" /}
+</body>
+</html>

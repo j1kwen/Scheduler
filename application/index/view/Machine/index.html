@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+{include file="Public:header" /}
+</head>
+<body>
+{include file="Public:topbar" /}
+<div class="container">
+{if condition="$isadd"}
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<strong>添加成功！</strong>已成功添加机房 - {$add_name|default=''}
+	</div>
+{/if}
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			当前机房信息
+		</div>		
+		<div class="panel-body">
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addModal">
+				<span class="glyphicon glyphicon-plus"></span>&nbsp;新增
+			</button>
+		</div>
+		<!-- Table -->
+		<table class="table table-bordered text-center table-responsive table-hover">
+			<thead>
+			</thead>
+				<tr>
+					<th>机房号</th>
+					<th>预约编号</th>
+					<th>机器数量</th>
+					<th>课程类型</th>
+					<th>操作</th>
+				</tr>
+			<tbody>
+{foreach $list as $item}
+				<tr>
+					<td>{$item.name}</td>
+					<td>{$item.no}</td>
+					<td>{$item.mac}</td>
+					<td>{$item.tName}</td>
+					<td>删除|编辑</td>
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="addModalLabel">添加机房</h4>
+	      </div>
+	      <form role="form" class="form-horizontal" action="{:url('index/Machine/index','')}" method="POST">
+	      <div class="modal-body">
+			  <div class="form-group has-feedback">
+			    <label for="inputName" class="col-sm-2 control-label">机房号</label>
+			    <div class="col-sm-10">
+			    	<input type="text" class="form-control" name="name" id="inputName" placeholder="数字编号+分区，如3A">
+			    </div>
+			  </div>
+			  <div class="form-group has-feedback">
+			    <label for="inputNo" class="col-sm-2 control-label">预约编号</label>
+			    <div class="col-sm-10">
+			    	<input type="number" class="form-control" name="no" id="inputNo" placeholder="机房预约编号">
+			  	</div>
+			  </div>
+			  <div class="form-group has-feedback">
+			    <label for="inputMac" class="col-sm-2 control-label">机器数量</label>
+			    <div class="col-sm-10">
+			    	<input type="number" class="form-control" name="mac" id="inputMac" placeholder="输入机器数量">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputType" class="col-sm-2 control-label">课程类型</label>
+			    <div class="col-sm-8">
+			    	<select class="form-control" name="type" id="inputType">
+{foreach $types as $ti}
+			    		<option value="{$ti.id}" title="{$ti.description}">{$ti.name}</option>
+{/foreach}
+			    	</select>
+			    </div>
+			    <div class="col-sm-2">
+				    <a class="btn btn-default" href="{:url('index/Machine/type','')}" title="管理课程类型">管理</a>
+			    </div>
+			  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="submit" class="btn btn-primary">保存</button>
+	      </div>
+		</form>
+	    </div>
+	  </div>
+	</div>
+</div>
+{include file="Public:footer" /}
+</body>
+</html>

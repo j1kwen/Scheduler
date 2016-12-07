@@ -206,4 +206,8 @@ class Controller
             return true;
         }
     }
+    
+    public function _empty($name) {
+    	$this->error();
+    }
 }

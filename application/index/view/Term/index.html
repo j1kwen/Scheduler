@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+{include file="Public:header" /}
+</head>
+<body>
+{include file="Public:topbar" /}
+<div class="container">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			学期信息
+		</div>		
+		<div class="panel-body">
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addModal">
+				<span class="glyphicon glyphicon-plus" title="添加新学期"></span>
+			</button>
+			&nbsp;
+			<button type="button" class="btn btn-default btn-refresh" title="刷新">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</button>
+			<div class="row">
+{foreach $list as $item}
+			  <div class="col-md-3 col-sm-4 col-xs-10 col-xs-offset-1 col-md-offset-0 col-sm-offset-0">
+			    <div class="thumbnail">
+{if condition="$item.is_cur"}
+			    	<div class="cur-term">
+			      		<img src="__STATIC__/img/cur-term.png" alt="...">
+			    	</div>
+{/if}
+			      <img src="__STATIC__/img/img_term.gif" alt="...">
+			      <div class="caption">
+			        <h4>{$item.year}-{$item.year+1}学年</h4>
+			        <h5>第{$item.term}学期&nbsp;{$item.start}</h5>
+			        <p>
+			        	<button type="button" data-id="{$item.id}" class="btn btn-primary btn-set-term{$item.is_cur?' disabled':''}" role="button">{$item.is_cur?'已设置':'设为当前'}</button>
+						<button type="button" class="btn btn-warning btn-mod-term" title="修改开学日"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button type="button" class="btn btn-danger btn-del-term" title="删除该学期"><span class="glyphicon glyphicon-trash"></span></button>
+					</p>
+			      </div>
+			    </div>
+			  </div>
+{/foreach}
+		</div>
+	</div>
+	<!-- Model -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="addModalLabel"><span class="glyphicon glyphicon-tasks"></span>&nbsp;添加新学期</h4>
+	      </div>
+	      <form role="form" class="form-horizontal" action="{:url('index/Term/add')}">
+	      <div class="modal-body">
+	      	<div class="alert alert-warning" role="alert"><strong>注意！</strong>开学日请选择<strong>周一</strong>！</div>
+			  <div class="form-group has-feedback">
+			    <label for="inputType" class="col-sm-2 control-label">学年</label>
+			    <div class="col-sm-9">
+			    	<select class="form-control" name="year" id="inputType">
+{for start="$max_year|default=time()|date='Y',###" end="2010" comparison="egt" step="-1"}
+			    		<option value="{$i}">{$i}-{$i+1}</option>
+{/for}
+			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group has-feedback">
+			    <label for="inputTerm" class="col-sm-2 control-label">学期</label>
+			    <div class="col-sm-9">
+			    	<select class="form-control" name="term" id="inputTerm">
+			    		<option value="1">1</option>
+			    		<option value="2">2</option>
+			    		<option value="3">3</option>
+			    	</select>
+			    </div>
+			  </div>
+			  <div class="form-group has-feedback">
+               <label for="inputDate" class="col-sm-2 control-label">开学日</label>
+               <div class="col-sm-9">
+	               <div class="input-group date form_date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+	                   <input class="form-control" name="date" size="16" type="text" value="" id="inputDate" readonly>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	               </div>
+               </div>
+          	  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary btn-form-submit">确定</button>
+	      </div>
+		</form>
+	    </div>
+	  </div>
+	</div>
+</div>
+<script type="text/javascript">
+	var set_cur_term = "{:url('index/Term/cur')}";
+	var del_cur_term = "{:url('index/Term/del')}";
+	var mod_cur_term = "{:url('index/Term/modify')}";
+</script>
+{include file="Public:footer" /}
+<script type="text/javascript">
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+{include file="Public:header" /}
+<body>
+{include file="Public:topbar" /}
+<div class="container">
+{$alert|default=''}
+	<div class="panel panel-{:empty($week)?'danger':'success'}">
+		<div class="panel-heading">第{$week|default='1'}周</div>		
+		<!-- Table -->
+		<table class="table table-bordered text-center table-responsive">
+			<thead>
+			</thead>
+				<td></td>
+				<td>星期一</td>
+				<td>星期二</td>
+				<td>星期三</td>
+				<td>星期四</td>
+				<td>星期五</td>
+				<td>星期六</td>
+				<td>星期日</td>
+			<tbody>
+{for start="0" end="5" comparison="lt" step="1" name="i"}
+				<tr>
+					<td>
+						{switch name="i"}
+							{case value="0"}1-2节{/case}
+							{case value="1"}3-4节{/case}
+							{case value="2"}5-6节{/case}
+							{case value="3"}7-8节{/case}
+							{case value="4"}9-10节{/case}
+						{/switch}
+					</td>
+{for start="0" end="7" comparison="lt" step="1" name="j" }
+					<td>
+						<button type="button" class="btn btn-success bs-docs-popover" data-toggle="popover" title="" aria-describedby="popover{$i*7+$j}">Show</button>
+						<div class="popover fade right in" role="tooltip" id="popover{$i*7+$j}" style="top: 25.5px; left: 232.109px; display:none">
+							<div class="arrow" style="top: 50%;"></div>
+							<h3 class="popover-title">Popover title</h3>
+							<div class="popover-content">
+								<table class="table table-bordered">
+{for start="0" end="$rows" comparison="lt" step="1" name="ii"}
+									<tr>
+{for start="0" end="$cols" comparison="lt" step="1" name="jj"}
+										<td>7-A<br/>
+											N117</td>
+{/for}
+									</tr>
+{/for}
+								</table>
+							</div>
+						</div>
+					</td>
+{/for}
+				</tr>
+{/for}
+			</tbody>
+		</table>
+		<div class="panel-footer">Panel footer</div>
+	</div><div class="well">
+		<a href="#" class="example btn btn-success" rel="popover" data-content="为我的网站创建一个提示框如此简单！" data-original-title="Bootstrap弹出框">悬停弹出框</a>
+	</div>
+</div> <!-- Condainer -->
+{include file="Public:footer" /}
+<script>
+$(function () { $("[data-toggle='popover']").popover(); });
+</script>
+</body>
+</html>

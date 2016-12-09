@@ -12,7 +12,7 @@
 				<p>现在是&nbsp;{$data.time|default=time()|date='Y年m月d日',###}</p>
 			</div>
 			<div class="col-xs-4">
-				<p><span class="label label-default">星期{$rep_week[$_day]}</span></p>
+				<p><span class="label label-warning">星期{$rep_week[$_day]}</span></p>
 			</div>
 		</div>
 		<div class="row">
@@ -25,9 +25,15 @@
 {/if}
 				</a></p>
 			</div>
-{if condition=:isset($_week)}
+{if condition=:isset($item)}
 			<div class="col-xs-4">
-				<p><span class="label label-default">第{$_week|default=1}周</span></p>
+				<p><span class="label label-success">
+{if condition=:isset($_week)}
+					第{$_week}周
+{else /}
+					未开学
+{/if}
+				</span></p>
 			</div>
 {/if}
 		</div>
@@ -59,31 +65,11 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="setStartModal" tabindex="-1" role="dialog" aria-labelledby="setStartModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title" id="setStartModalLabel">设置起始周</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-		                <label for="dtp_input2" class=" control-label">选择第一周周一所在日：</label>
-		                <div class="input-group date form_date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-		                    <input class="form-control" size="16" type="text" value="" readonly>
-							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-		                </div>
-	            	</div>
-	
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<div class="callout callout-warning">
+    <h4>向右侧对齐多个组件Right aligning multiple components</h4>
+    <p>导航条目前不支持多个 <code>.navbar-right</code> 类。为了让内容之间有合适的空隙，我们为最后一个 <code>.navbar-right</code> 元素使用负边距（margin）。如果有多个元素使用这个类，它们的边距（margin）将不能按照你的预期正常展现。</p>
+    <p>我们将在 v4 版本中重写这个组件时重新审视这个功能。</p>
+  </div>
 </div><!-- Container -->
 
 {include file="Public:footer" /}

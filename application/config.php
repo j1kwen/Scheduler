@@ -239,8 +239,8 @@ return [
 		
 	//全局替换
 	'view_replace_str' => [
-			'__PUBLIC__'=>'/public/',
-			'__STATIC__'=>'/public/static',
+			'__PUBLIC__'=>'/',
+			'__STATIC__'=>'/static',
 			'__ROOT__' => '/',
 	]
 ];

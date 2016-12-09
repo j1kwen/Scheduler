@@ -14,8 +14,12 @@ class Table extends Controller {
 		));
 		$term = model('term');
 		$item = $term->where('is_cur',1)->find();
-		if(isset($item)) {			
-			$differ = floor(date_diff(date_create($item->start), date_create())->format('%a') / 7) + 1;
+		if(isset($item)) {
+			$d_term = date_create($item->start);
+			$d_now = date_create();
+			if(date_timestamp_get($d_now) >= date_timestamp_get($d_term)) {
+				$differ = floor(date_diff($d_term, $d_now)->format('%a') / 7) + 1;
+			}
 		} else {			
 			$alert_string = (new View())->assign([
 					'type' => 'danger',

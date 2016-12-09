@@ -5,8 +5,8 @@
 {include file="Public:topbar" /}
 <div class="container">
 {$alert|default=''}
-	<div class="panel panel-{:empty($week)?'danger':'success'}">
-		<div class="panel-heading">第{$week|default='1'}周</div>		
+	<div class="panel panel-{:empty($alert)?(empty($week)?'warning':'info'):'danger'}">
+		<div class="panel-heading">第{$week|default='1'}周{:empty($alert)?(empty($week)?'（未开学）':''):'（未设置学期）'}</div>		
 		<!-- Table -->
 		<table class="table table-bordered text-center table-responsive">
 			<thead>

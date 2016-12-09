@@ -1,0 +1,30 @@
+{foreach $list as $item}
+			  <div class="col-md-3 col-sm-4 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+			    <div class="thumbnail">
+{if condition="$item.is_cur"}
+			    	<div class="cur-term">
+			      		<img src="__STATIC__/img/cur-term.png" alt="...">
+			    	</div>
+{/if}
+			      <img src="__STATIC__/img/img_term.gif" alt="...">
+			      <div class="caption">
+			        <h4>{$item.year}-{$item.year+1}学年</h4>
+			        <h5>第{$item.term}学期&nbsp;{$item.start}</h5>
+			        <p>
+			        	<button type="button" data-id="{$item.id}" class="btn btn-primary btn-set-term{$item.is_cur?' disabled':''}" role="button">{$item.is_cur?'已设置':'设为当前'}</button>
+						<button type="button" class="btn btn-warning btn-mod-term" title="修改开学日"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button type="button" class="btn btn-danger btn-del-term" title="删除该学期"><span class="glyphicon glyphicon-trash"></span></button>
+					</p>
+			      </div>
+			    </div>
+			  </div>
+{/foreach}
+{if condition="empty($list)"}
+{include file="Public/list_empty"}
+{/if}
+<script type="text/javascript">
+	var set_cur_term = "{:url('index/Term/cur')}";
+	var del_cur_term = "{:url('index/Term/del')}";
+	var mod_cur_term = "{:url('index/Term/modify')}";
+</script>
+<script type="text/javascript" src="__STATIC__/js/term.js"></script>

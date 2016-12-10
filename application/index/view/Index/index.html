@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-{include file="Public:header" /}
+{include file="public:header" /}
 <body>
-{include file="Public:topbar" /}
+{include file="public:topbar" /}
 <div class="container">
 {$alert_string|default=''}
 	<div class="jumbotron">
@@ -17,7 +17,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-				<p><a href="{:url('index/Term/index','')}" title="修改学期">
+				<p><a href="{:url('index/term/index','')}" title="修改学期">
 {if condition=:isset($item)}
 					{$item.year}-{$item.year+1}学年&nbsp;&nbsp;第{$item.term}学期
 {else /}
@@ -37,7 +37,7 @@
 			</div>
 {/if}
 		</div>
-		<p><a class="btn btn-primary btn-lg" href="{:url('index/Table/index','')}" role="button">查看课表</a></p>
+		<p><a class="btn btn-primary btn-lg" href="{:url('index/table/index','')}" role="button">查看课表</a></p>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -72,7 +72,7 @@
   </div>
 </div><!-- Container -->
 
-{include file="Public:footer" /}
+{include file="public:footer" /}
 <script type="text/javascript">
 $('.form_date').datetimepicker({
     language:  'zh-CN',

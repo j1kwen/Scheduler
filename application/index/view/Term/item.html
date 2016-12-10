@@ -20,11 +20,11 @@
 			  </div>
 {/foreach}
 {if condition="empty($list)"}
-{include file="Public/list_empty"}
+{include file="public/list_empty"}
 {/if}
 <script type="text/javascript">
-	var set_cur_term = "{:url('index/Term/cur')}";
-	var del_cur_term = "{:url('index/Term/del')}";
-	var mod_cur_term = "{:url('index/Term/modify')}";
+	var set_cur_term = "{:url('index/term/cur')}";
+	var del_cur_term = "{:url('index/term/del')}";
+	var mod_cur_term = "{:url('index/term/modify')}";
 </script>
 <script type="text/javascript" src="__STATIC__/js/term.js"></script>

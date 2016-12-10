@@ -1,4 +1,7 @@
 		<!-- Table -->
+{if condition="empty($list)"}
+{include file="public/list_empty"}
+{else /}
 		<table class="table table-bordered text-center table-responsive table-hover">
 			<thead>
 			</thead>
@@ -12,7 +15,7 @@
 {foreach $list as $item}
 				<tr>
 					<td>{$item.id}</td>
-					<td>{$item.name}</td>
+					<td><div class="label label-default">{$item.name}</div></td>
 					<td>{$item.description}</td>
 					<td>
 						<button type="button" class="btn btn-sm btn-warning btn-mod-type" title="修改该类型"><span class="glyphicon glyphicon-pencil"></span></button>
@@ -21,10 +24,8 @@
 {/foreach}
 			</tbody>
 		</table>
-{if condition="empty($list)"}
-{include file="Public/list_empty"}
 {/if}
 <script>
-	var mod_type = "{:url('index/Type/modify')}";
+	var mod_type = "{:url('index/type/modify')}";
 </script>
 <script type="text/javascript" src="__STATIC__/js/type.js"></script>

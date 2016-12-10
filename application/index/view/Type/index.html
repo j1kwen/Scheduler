@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-{include file="Public:header" /}
+{include file="public:header" /}
 </head>
 <body>
-{include file="Public:topbar" /}
+{include file="public:topbar" /}
 <div class="container">
 	<div class="panel panel-info">
 		<div class="panel-heading">
@@ -19,7 +19,7 @@
 				<span class="glyphicon glyphicon-refresh"></span>
 			</button>
 		</div>
-		<div data-area="type">
+		<div data-area="type" class="panel-table">
 		</div>
 	</div>
 	<!-- Modal -->
@@ -30,7 +30,7 @@
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	        <h4 class="modal-title" id="addModalLabel"><span class="glyphicon glyphicon-tag"></span>&nbsp;添加课程类型</h4>
 	      </div>
-	      <form role="form" class="form-horizontal" action="{:url('index/Type/add')}" method="POST">
+	      <form role="form" class="form-horizontal" action="{:url('index/type/add')}" method="POST">
 	      <div class="modal-body">
 	      	<div class="alert alert-warning" role="alert"><strong>注意！</strong>课程类型添加后不可删除，只能修改！</div>
 			  <div class="form-group has-feedback">
@@ -56,8 +56,8 @@
 	</div>
 </div>
 <script>
-	var get_item = "{:url('index/Type/item')}";
+	var get_item = "{:url('index/type/item')}";
 </script>
-{include file="Public:footer" /}
+{include file="public:footer" /}
 </body>
 </html>

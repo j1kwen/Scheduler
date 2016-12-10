@@ -1,0 +1,9 @@
+		<!-- Table -->
+{if condition="empty($logs)"}
+{include file="public/list_empty"}
+{else /}
+		<div class="well">
+			{:dump($logs)}
+		</div>
+{/if}
+<script type="text/javascript" src="__STATIC__/js/logs.js"></script>

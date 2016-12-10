@@ -1,4 +1,7 @@
 		<!-- Table -->
+{if condition="empty($list)"}
+{include file="public/list_empty"}
+{else /}
 		<table class="table table-bordered text-center table-responsive table-hover">
 			<thead>
 			</thead>
@@ -17,19 +20,17 @@
 					<td>{$item.mac}</td>
 					<td>{$item.tName}</td>
 					<td>
-						<button type="button" class="btn btn-sm btn-warning btn-mod-machine" title="修改机房"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button type="button" class="btn btn-sm btn-warning btn-mod-machine" title="修改机房"><span class="glyphicon glyphicon-pencil"></span></button> 
 						<button type="button" class="btn btn-sm btn-danger btn-del-machine" title="删除机房"><span class="glyphicon glyphicon-trash"></span></button>
 					</td>
 				</tr>
 {/foreach}
 			</tbody>
 		</table>
-{if condition="empty($list)"}
-{include file="Public/list_empty"}
 {/if}
 <script>
-	var mod_machine = "{:url('index/Machine/modify')}";
-	var del_machine = "{:url('index/Machine/del')}";
+	var mod_machine = "{:url('index/machine/modify')}";
+	var del_machine = "{:url('index/machine/del')}";
 	var type_list = new Array(
 {foreach name="types" item="t" key="k"}
 {if condition="$k neq 0"},{/if}{id: {$t.id}, des: "{$t.description}", name: "{$t.name}"}

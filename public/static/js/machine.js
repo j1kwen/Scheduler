@@ -18,7 +18,7 @@ $(".btn-mod-machine").click(function() {
 	var _mac = $(_tr[2]).text();
 	var _type = $(_tr[3]).text();
 	var item = $(this).parent().parent();
-	var _id = $(item).attr('data-id');
+	var _id = $(item).attr('data-id').trim();
 	var _tp_lst = new String();
 	for(_t in type_list) {
 		var _i = type_list[_t];
@@ -40,8 +40,8 @@ $(".btn-mod-machine").click(function() {
 			确定: {
 				btnClass: "btn btn-warning",
 				action: function() {
-					var m_mac = $("#m-mac").val();
-					var m_type = $("#m-type").val();
+					var m_mac = $("#m-mac").val().trim();
+					var m_type = $("#m-type").val().trim();
 					var m_tp_name = "";
 					for(_t in type_list) {
 						var _i = type_list[_t];

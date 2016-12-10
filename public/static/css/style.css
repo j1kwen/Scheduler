@@ -24,7 +24,7 @@ body {
 	padding-bottom: 40px;
 }
 
-.panel-body .row {
+.panel-body .row, .panel-body [data-area=logs] {
 	margin-top: 15px;
 }
 .cur-term {
@@ -32,7 +32,9 @@ body {
 	display: block;
 	z-index: 666;
 }
-
+.panel-table {
+	margin-bottom: 25px;
+}
 .jumbotron .label {
 	font-size: 100%;
 }

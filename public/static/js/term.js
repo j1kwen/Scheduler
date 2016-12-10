@@ -23,7 +23,7 @@ function setReset(btn, ret) {
 $(".btn-set-term").click(function() {
 	var year = $(this).parent().siblings("h4").text();
 	var s_term = $(this).parent().siblings("h5").text();
-	var s_id = $(this).attr('data-id');
+	var s_id = $(this).attr('data-id').trim();
 	var str = $(this).text();
 	var str_d = "已设置";
 	var btn = $(this);
@@ -76,7 +76,7 @@ $(".btn-del-term").click(function() {
 	var year = $(this).parent().siblings("h4").text();
 	var s_term = $(this).parent().siblings("h5").text();
 	var btn = $(this);
-	var s_id = $(this).siblings("[data-id]").attr('data-id');
+	var s_id = $(this).siblings("[data-id]").attr('data-id').trim();
 	var item = $(this).parents(".thumbnail").parent();
 	$.confirm({
 		type: 'red',
@@ -113,7 +113,7 @@ $(".btn-del-term").click(function() {
 	});
 });
 $('.btn-mod-term').click(function() {
-	var _id = $(this).siblings("[data-id]").attr('data-id');
+	var _id = $(this).siblings("[data-id]").attr('data-id').trim();
 	var _term = new String($(this).parent().siblings("h5").text());
 	var _start = _term.substr(-10);
 	var _mod = $(this).parent().siblings("h5");
@@ -130,7 +130,7 @@ $('.btn-mod-term').click(function() {
 			确定: {
 				btnClass: 'btn btn-warning',
 				action: function() {
-					var sel_date = $("#picker-dialog>input").val();
+					var sel_date = $("#picker-dialog>input").val().trim();
 					if(sel_date == _start) {
 						return true;
 					}

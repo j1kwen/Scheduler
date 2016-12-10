@@ -57,7 +57,7 @@ $(document).ready(function() {
 				if(_data != "") {
 					_data = _data + "&"
 				}
-				_data = _data + $(this).attr("name") + "=" + $(this).val();
+				_data = _data + $(this).attr("name").trim() + "=" + $(this).val().trim();
 			});
 			setWaiting($(this), '保存中…');
 			$.ajax({
@@ -133,12 +133,12 @@ $(document).ready(function() {
 		$.ajax({
 			url: get_item,
 			success: function(data) {
-				$("[data-area]").html(data);
 				$(".refreshing").removeClass("refreshing");
+				$("[data-area]").html(data);
 			}, 
 			error: function() {
-				$("[data-area]").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;发生错误</div>');
 				$(".refreshing").removeClass("refreshing");
+				$("[data-area]").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;发生错误</div>');
 			}
 		});
 	}

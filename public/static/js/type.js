@@ -15,8 +15,8 @@ function showErrorAlert(title, content) {
 }
 $(".btn-mod-type").click(function() {
 	var _tr = $(this).parent().siblings().toArray();
-	var _id = $(_tr[0]).text();
-	var _name = $(_tr[1]).text();
+	var _id = $(_tr[0]).text().trim();
+	var _name = $(_tr[1]).find(".label").text();
 	var _desc = $(_tr[2]).text();
 	$.confirm({
 		type: 'orange',
@@ -30,15 +30,18 @@ $(".btn-mod-type").click(function() {
 			确定: {
 				btnClass: "btn btn-warning",
 				action: function() {
-					var m_name = $("#m-name").val();
-					var m_desc = $("#m-desc").val();
+					var m_name = $("#m-name").val().trim();
+					var m_desc = $("#m-desc").val().trim();
+					if(m_name == _name && m_desc == _desc) {
+						return true;
+					}
 					$.ajax({
 						url: mod_type,
 						type: "POST",
 						data: "id=" + _id + "&name=" + m_name + "&description=" + m_desc,
 						success: function(data) {
 							if(data.success) {
-								$(_tr[1]).text(m_name);
+								$(_tr[1]).find(".label").text(m_name);
 								$(_tr[2]).text(m_desc);
 							} else {
 								showErrorAlert('错误', data.msg);

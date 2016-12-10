@@ -9,14 +9,14 @@ class Resource extends Controller {
 	public function about() {
 		if(Request::instance()->isAjax()) {
 			
-			return $this->fetch('Public/about');
+			return $this->fetch('public/about');
 		} else {
 			$this->error();
 		}
 	}
 	
 	public function debug() {
-		return $this->fetch('Public/debug',[
+		return $this->fetch('public/debug',[
 				'title' => 'Debug it',
 		]);
 	}

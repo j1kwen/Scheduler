@@ -26,9 +26,9 @@ class Table extends Controller {
 					'close' => false,
 					'title' => '错误！',
 					'body' => '暂未设置当前学期，无法查看课表！',
-					'href' => url('index/Term/index'),
+					'href' => url('index/term/index'),
 					'href_text' => '立即设置',
-			])->fetch('Public/alert');
+			])->fetch('public/alert');
 		}
 		$this->assign([
 				'title' => '课表总览',

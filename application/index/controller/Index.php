@@ -31,7 +31,7 @@ class Index extends Controller
     			'close' => true,
     			'title' => '登录成功！',
     			'body' => '已作为系统管理员登录',
-    	])->fetch('Public/alert');
+    	])->fetch('public/alert');
     	$this->assign([
 				'title' => '首页',
     			'item' => $item,

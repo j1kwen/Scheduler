@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-{include file="Public:header" /}
+{include file="public:header" /}
 <body>
-{include file="Public:topbar" /}
+{include file="public:topbar" /}
 <div class="container">
 {$alert|default=''}
 	<div class="panel panel-{:empty($alert)?(empty($week)?'warning':'info'):'danger'}">
@@ -61,7 +61,7 @@
 		<a href="#" class="example btn btn-success" rel="popover" data-content="为我的网站创建一个提示框如此简单！" data-original-title="Bootstrap弹出框">悬停弹出框</a>
 	</div>
 </div> <!-- Condainer -->
-{include file="Public:footer" /}
+{include file="public:footer" /}
 <script>
 $(function () { $("[data-toggle='popover']").popover(); });
 </script>

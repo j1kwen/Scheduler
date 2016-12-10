@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+{include file="public/header" /}
+<body style="padding-top: 0px;">
+   <div class="container">
+  	<div class="page-header col-lg-10 col-lg-offset-1 col-md-12 col-xs-12 col-xs-offset-0">
+	  <h1>排课系统  <small>Scheduler</small></h1>
+	</div>
+       <div class="row">
+           <div class="col-lg-6 col-lg-offset-1 col-md-7 col-xs-12 col-xs-offset-0">
+               <div class="callout callout-info" style="margin: 0px;padding:0px;">
+               	<img src="__STATIC__/img/login-left-img.jpg" class="img-responsive" alt="Responsive image">
+               </div>
+           </div>
+           <div class="col-lg-4 col-md-5 col-xs-12">
+               <div class="panel panel-info" style="margin-top: 10px;">
+               	<div class="panel-heading">
+					<h4><span class="glyphicon glyphicon-user"></span>&nbsp;用户登录&nbsp;<small>Login</small></h4>
+				</div>		
+				<div class="panel-body">
+					<form class="form-horizontal" role="form" action="{:url('index/login/verify')}">
+					  <div class="form-group has-feedback">
+					    <label for="inputUser" class="col-sm-3 control-label">用户名</label>
+					    <div class="col-sm-8">
+					      <input name="user" type="text" class="form-control" id="inputUser" placeholder="Username">
+					    </div>
+					  </div>
+					  <div class="form-group has-feedback">
+					    <label for="inputPassword" class="col-sm-3 control-label">密码</label>
+					    <div class="col-sm-8">
+					      <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <div class="col-sm-offset-3 col-sm-8">
+					      <button type="button" class="btn btn-info btn-form-submit">登录</button>&nbsp;&nbsp;
+					      <button type="button" class="btn btn-warning" id="login-without-user">游客访问</button>
+					    </div>
+					  </div>
+					</form>
+               </div>
+           </div>
+       </div>
+
+   </div>
+   <!-- /.container -->
+<script type="text/javascript">
+	
+</script>
+{include file="public/footer" /}
+<script src="__STATIC__/js/login.js"></script>
+</body>
+
+</html>

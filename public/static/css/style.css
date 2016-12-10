@@ -6,6 +6,11 @@
 body { 
 	padding-top: 70px;
 }
+body.login-body {
+/* 	background: url("../img/login-bg.jpg"); */
+	background-repeat: no-repeat;
+	background-position: inherit;
+}
 .table table { 
 	text-align: center;
 	margin-bottom: 0px;

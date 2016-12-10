@@ -13,11 +13,14 @@
                </div>
            </div>
            <div class="col-lg-4 col-md-5 col-xs-12">
+           		
                <div class="panel panel-info" style="margin-top: 10px;">
                	<div class="panel-heading">
 					<h4><span class="glyphicon glyphicon-user"></span>&nbsp;用户登录&nbsp;<small>Login</small></h4>
 				</div>		
 				<div class="panel-body">
+					               <div id="alert-area">
+				</div>
 					<form class="form-horizontal" role="form" action="{:url('index/login/verify')}">
 					  <div class="form-group has-feedback">
 					    <label for="inputUser" class="col-sm-3 control-label">用户名</label>
@@ -33,7 +36,7 @@
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-3 col-sm-8">
-					      <button type="button" class="btn btn-info btn-form-submit">登录</button>&nbsp;&nbsp;
+					      <button type="button" class="btn btn-info" id="btn-login">登录</button>&nbsp;&nbsp;
 					      <button type="button" class="btn btn-warning" id="login-without-user">游客访问</button>
 					    </div>
 					  </div>

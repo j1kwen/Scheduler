@@ -62,6 +62,8 @@ $("#btn-login").click(function() {
 				} else {
 					setReset(btn, '登录');
 					showErrorAlert('登录失败！', data.msg);
+					$("#inputCaptcha").parent().next().find("img").click();
+					$("input[name='captcha']").val('');
 					$("input[name='password']").val('').focus();
 				}
 			},
@@ -82,6 +84,18 @@ $("input[name='user']").keypress(function(event) {
 $("input[name='password']").keypress(function(event) {
 	var keycode = (event.keyCode ? event.keyCode : event.which);  
     if(keycode == '13'){  
+    	$("input[name='captcha']").focus();
+    }
+});
+
+$("input[name='captcha']").keypress(function() {
+	var keycode = (event.keyCode ? event.keyCode : event.which);  
+    if(keycode == '13'){  
     	$("#btn-login").click();
     }
+});
+
+$("#inputCaptcha").parent().next().find("img").click(function() {
+	var url = $(this).attr('src');
+	$(this).attr('src', url);
 });

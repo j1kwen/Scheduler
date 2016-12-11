@@ -27,15 +27,24 @@
 					<form class="form-horizontal" role="form" action="{:url('index/login/verify')}">
 					  <div class="form-group has-feedback">
 					    <label for="inputUser" class="col-sm-3 control-label">用户名</label>
-					    <div class="col-sm-8">
+					    <div class="col-md-8 col-sm-7">
 					      <input name="user" type="text" class="form-control" id="inputUser" placeholder="Username">
 					    </div>
 					  </div>
 					  <div class="form-group has-feedback">
 					    <label for="inputPassword" class="col-sm-3 control-label">密码</label>
-					    <div class="col-sm-8">
+					    <div class="col-md-8 col-sm-7">
 					      <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
 					    </div>
+					  </div>
+					  <div class="form-group has-feedback">
+					    <label for="inputCaptcha" class="col-sm-3 col-xs-12 control-label">验证码</label>
+					    <div class="col-md-5 col-sm-4 col-xs-6">
+					      <input name="captcha" type="text" class="form-control" id="inputCaptcha" placeholder="Captcha">
+					    </div>
+						  <div class="col-md-3 col-sm-3 col-xs-5">
+						  	<img src="{:captcha_src()}" alt="code" class="img-captcha" />
+						  </div>
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-3 col-sm-8">

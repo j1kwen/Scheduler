@@ -29,7 +29,12 @@ class Login extends Controller
     	if($request->isAjax()) {
     		$_user = $request->param('user');
     		$_pwd = $request->param('password');
-	        if (!empty($_user) && !empty($_pwd)) {
+    		$_code = $request->param('captcha');
+	        if (!empty($_user) && !empty($_pwd) && !empty($_code)) {
+	        	if(!captcha_check($_code)) {
+	        		// code error
+	        		return $this->getAjaxResp("验证码错误！");
+	        	}
 	        	$auth = new Auth();
 	        	if($auth->authUser($_user, $_pwd, $request->ip())) {
 	        		Auth::login($_user, $auth->getName($_user));

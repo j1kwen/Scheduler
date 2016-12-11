@@ -21,7 +21,10 @@
 				<div class="panel-body">
 				<div id="alert-area">
 {if condition="isset($alert)"}
-					<div class="alert alert-warning">{$alert}</div>
+					<div class="alert alert-warning alert-dismissible" role="alert">
+					  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					  <strong>{$alert}</strong>
+					</div>
 {/if}
 				</div>
 					<form class="form-horizontal" role="form" action="{:url('index/login/verify')}">

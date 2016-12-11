@@ -70,6 +70,8 @@ $("#btn-login").click(function() {
 			error: function() {
 				setReset(btn, '登录');
 				showErrorAlert('网络错误！', '请检查网络连接');
+				$("#inputCaptcha").parent().next().find("img").click();
+				$("input[name='captcha']").val('');
 			}
 		});
 	}

@@ -206,15 +206,4 @@ class Controller
             return true;
         }
     }
-    
-    public function _empty($name) {
-    	$this->error();
-    }
-    
-    protected function getAjaxResp($msg="error", $ok=false) {
-    	return json([
-    			"success" => $ok,
-    			"msg" => $msg,
-    	]);
-    }
 }

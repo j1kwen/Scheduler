@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fbd8e3fd766a7d275d617996663b8afe",
+    "hash": "d0cd6243ede4109053982e23c15235dc",
     "content-hash": "786db149f3fc0327c3d1eb9670d10cae",
     "packages": [
         {
@@ -17,7 +17,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/top-think/framework/fd30f090e40dc25a758d99029fa07f669f575580.zip",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/fd30f090e40dc25a758d99029fa07f669f575580",
                 "reference": "fd30f090e40dc25a758d99029fa07f669f575580",
                 "shasum": ""
             },
@@ -69,7 +69,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/top-think/think-captcha/0c55455df26a1626a60d0dc35d2d89002b741d44.zip",
+                "url": "https://api.github.com/repos/top-think/think-captcha/zipball/0c55455df26a1626a60d0dc35d2d89002b741d44",
                 "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44",
                 "shasum": ""
             },
@@ -105,7 +105,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/top-think/think-installer/4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d.zip",
+                "url": "https://api.github.com/repos/top-think/think-installer/zipball/4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d",
                 "reference": "4c6e1ebecd1afce3f4ccc47e147d61bbe1bf641d",
                 "shasum": ""
             },

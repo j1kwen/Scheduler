@@ -11,6 +11,7 @@ class BaseController extends Controller {
 	protected $_auth = false;
 	
     public function _initialize() {
+    	parent::_initialize();
     	$this->_auth = Auth::login();
     	if(!$this->_auth) {    		
     		$request = Request::instance();

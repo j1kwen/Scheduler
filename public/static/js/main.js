@@ -96,7 +96,7 @@ $(document).ready(function() {
 			url: g_url,
 			success: function(data) {
 				if(data.code == 0) {
-					$("#about-modal").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;登陆失效，请刷新页面</div>');
+					$("#about-modal").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;登录失效，请刷新页面</div>');
 				} else {
 					$("#about-modal").html(data);					
 				}
@@ -232,13 +232,16 @@ $(document).ready(function() {
         return false;
 	});
 	function loadItem() {
+		if(typeof get_item =='undefined') {
+			return false;
+		}
 		$("[data-area]").html('<div class="loading-icon"></div>');
 		$.ajax({
 			url: get_item,
 			success: function(data) {
 				if(data.code == 0) {
 					$(".refreshing").removeClass("refreshing");
-					$("[data-area]").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;登陆失效，请刷新页面</div>');
+					$("[data-area]").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;登录失效，请刷新页面</div>');
 				} else {					
 					$(".refreshing").removeClass("refreshing");
 					$("[data-area]").html(data);

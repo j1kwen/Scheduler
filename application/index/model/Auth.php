@@ -52,19 +52,19 @@ class Auth extends Model {
 	 */
 	public static function login($user = null, $name = null) {
 		if(empty($user)) {
-			return Session::has('user', 'scheduler');
+			return Session::has('user');
 		}
 		if(empty($name)) {
 			$auth = new Auth();
 			$name = $auth->getName($user);
 		}
-		session('user', $user, 'scheduler');
-		session('name', $name, 'scheduler');
+		Session::set('user', $user);
+		Session::set('name', $name);
 	}
 	/**
 	 * 注销
 	 */
 	public static function logout() {
-		Session::clear('scheduler');
+		Session::clear();
 	}
 }

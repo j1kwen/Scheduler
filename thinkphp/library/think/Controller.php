@@ -65,6 +65,14 @@ class Controller
     // 初始化
     protected function _initialize()
     {
+    	if(Session::has('timestamp')
+    		&& (time() - Session::get('timestamp') > Config::get('customize.expire'))) {
+    		// 有时间戳并且时间戳过期
+    		// 销毁当前session
+    		Session::clear();
+    	}
+    	// 更新session时间戳
+    	Session::set('timestamp', time());
     }
 
     /**

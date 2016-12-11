@@ -11,9 +11,9 @@ class Login extends Controller
     public function index(Request $request)
     {
         if (!Auth::login()) {
-        	if(Session::has('redir','scheduler') && Session::get('redir','scheduler')) {
+        	if(Session::has('redir') && Session::get('redir')) {
         		$_alert = '请先登录！';
-        		Session::set('redir', false, 'scheduler');
+        		Session::delete('redir');
         	}
         	$this->assign([
         			'title' => '用户登录',
@@ -62,7 +62,7 @@ class Login extends Controller
     		$pwd2 = $request->param('pwd2');
     		if(Auth::login()) {
     			// has login
-    			$cur_user = Session::get('user','scheduler');
+    			$cur_user = Session::get('user');
     			if($cur_user == $user && !empty($pwd) && !empty($pwd2) && $pwd == $pwd2) {
     				// user ok
     				$auth = new Auth();

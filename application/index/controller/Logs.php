@@ -6,7 +6,7 @@ use think\Controller;
 use think\Request;
 use think\Log;
 
-class Logs extends Controller {
+class Logs extends BaseController {
 	
 	public function index() {
 		

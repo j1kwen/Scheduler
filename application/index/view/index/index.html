@@ -12,7 +12,11 @@
 				<p>现在是&nbsp;{$data.time|default=time()|date='Y年m月d日',###}</p>
 			</div>
 			<div class="col-xs-4">
+{if condition="$_day==0 or $_day==6")}
+				<p><span class="label label-info">星期{$rep_week[$_day]}</span></p>
+{else /}
 				<p><span class="label label-warning">星期{$rep_week[$_day]}</span></p>
+{/if}
 			</div>
 		</div>
 		<div class="row">
@@ -27,17 +31,17 @@
 			</div>
 {if condition=:isset($item)}
 			<div class="col-xs-4">
-				<p><span class="label label-success">
 {if condition=:isset($_week)}
-					第{$_week}周
+				<p><span class="label label-success">第{$_week}周</span></p>
 {else /}
-					未开学
+				<p><span class="label label-danger">未开学</span></p>
 {/if}
-				</span></p>
 			</div>
 {/if}
 		</div>
-		<p><a class="btn btn-primary btn-lg" href="{:url('index/table/index','')}" role="button">查看课表</a></p>
+		<p><a class="btn btn-primary btn-lg" href="{:url('index/table/index','')}" role="button">
+			<span class="glyphicon glyphicon-list-alt" style="top: 3px;"></span>&nbsp;查看课表
+		</a></p>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-body">

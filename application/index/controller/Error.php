@@ -3,7 +3,7 @@ namespace app\index\controller;
 
 use think\Controller;
 
-class Error extends Controller
+class Error extends BaseController
 {
     public function index()
     {

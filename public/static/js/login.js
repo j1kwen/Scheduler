@@ -13,7 +13,16 @@ function setReset(btn, ret) {
 	$(btn).text(ret);
 }
 $("#login-without-user").click(function() {
-	$.alert('no user');
+	$.alert({
+		type: 'red',
+		title: '错误',
+		content: '暂未开放游客权限！',
+		buttons: {
+			确定: {
+				btnClass: 'btn btn-danger',
+			},
+		},
+	});
 });
 $("#btn-login").click(function() {
 	var nec = $(this).parents("form").find(".has-feedback");
@@ -53,6 +62,7 @@ $("#btn-login").click(function() {
 				} else {
 					setReset(btn, '登录');
 					showErrorAlert('登录失败！', data.msg);
+					$("input[name='password']").val('').focus();
 				}
 			},
 			error: function() {
@@ -61,4 +71,17 @@ $("#btn-login").click(function() {
 			}
 		});
 	}
+});
+$("input[name='user']").keypress(function(event) {
+	var keycode = (event.keyCode ? event.keyCode : event.which);  
+    if(keycode == '13'){  
+    	$("input[name='password']").focus();  
+    }
+});
+
+$("input[name='password']").keypress(function(event) {
+	var keycode = (event.keyCode ? event.keyCode : event.which);  
+    if(keycode == '13'){  
+    	$("#btn-login").click();
+    }
 });

@@ -5,7 +5,7 @@ use think\Request;
 use function think\error;
 use think\Exception;
 
-class Term extends Controller {
+class Term extends BaseController {
 	
 	public function index() {
 		$term = model('term');

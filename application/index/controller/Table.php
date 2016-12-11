@@ -4,7 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\View;
 
-class Table extends Controller {
+class Table extends BaseController {
 	
 	public function index() {
 

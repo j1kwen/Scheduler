@@ -5,8 +5,7 @@ use think\Request;
 use app\index\model\TypeList;
 use think\Exception;
 
-class Machine extends Controller
-{
+class Machine extends BaseController {
 	
 	public function index()
 	{

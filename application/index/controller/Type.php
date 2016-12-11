@@ -5,7 +5,7 @@ use think\Controller;
 use think\Request;
 use think\Exception;
 
-class Type extends Controller {
+class Type extends BaseController {
 	
 	public function index() {
 		$type = model('typeList');

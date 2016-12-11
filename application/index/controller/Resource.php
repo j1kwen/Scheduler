@@ -4,7 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Request;
 
-class Resource extends Controller {
+class Resource extends BaseController {
 	
 	public function about() {
 		if(Request::instance()->isAjax()) {

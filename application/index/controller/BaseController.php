@@ -18,7 +18,7 @@ class BaseController extends Controller {
 	    	if($request->isAjax()) {
 	    		$this->error('登录信息貌似已经过期，请刷新页面后重新登录！');
 	    	} else {
-	    		Session::set('redir', true, 'scheduler');
+	    		Session::set('redir', true);
 	    		$this->redirect('index/login/index');
 	    	}
     	}

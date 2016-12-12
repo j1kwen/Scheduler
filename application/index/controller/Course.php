@@ -7,7 +7,10 @@ use think\Request;
 class Course extends BaseController {
 	
 	public function index() {
-		return "123";
+		$this->assign([
+				'title' => '课程管理',
+		]);
+		return $this->fetch();
 	}
 	
 	public function item() {

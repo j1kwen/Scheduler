@@ -19,10 +19,7 @@ class Term extends BaseController {
 		$request = Request::instance();
 		if($request->isAjax()) {			
 			$term = model('term');
-			$list = $term->order([
-					'year' => 'desc',
-					'term' => 'desc',
-			])->select();
+			$list = $term->getItemList();
 			$this->assign([
 					'list' => $list,
 			]);
@@ -41,14 +38,7 @@ class Term extends BaseController {
 			if(!empty($year) && !empty($term_) && !empty($date_)) {
 				$term = model('term');
 				try {
-					$term->data([
-							'year' => $year,
-							'term' => $term_,
-							'start' => $date_,
-							'code' => $year.'0'.$term_,
-							'is_cur' => 0,
-					]);
-					$term->save();
+					$term->addItem($year, $term_, $date_);
 					return $this->getAjaxResp("success", true);
 				} catch (Exception $e) {
 					$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
@@ -74,8 +64,7 @@ class Term extends BaseController {
 			if(!empty($s_id)) {
 				$term = model('term');
 				try {
-					$term->where('id',$s_id)
-					->delete();
+					$term->deleteItem($s_id);
 					
 					// TODO: delete other info about this term
 					
@@ -98,14 +87,7 @@ class Term extends BaseController {
 			if(!empty($s_id)) {
 				$term = model('term');
 				try {
-					$term->where('is_cur',1)
-					->update([
-							'is_cur' => 0,
-					]);
-					$term->where('id',$s_id)
-						->update([
-								'is_cur' => 1,
-						]);
+					$term->setCurrent($s_id);
 					return $this->getAjaxResp("success", true);
 				} catch (Exception $e) {
 					return $this->getAjaxResp("服务器异常，请稍后重试！");
@@ -126,10 +108,7 @@ class Term extends BaseController {
 			if(!empty($_id) && !empty($_date)) {
 				$term = model('term');
 				try {
-					$term->where('id', $_id)
-					->update([
-							'start' => $_date,
-					]);
+					$term->updateItem($_id, $_date);
 					return $this->getAjaxResp("success", true);
 				} catch (Exception $e) {
 					return $this->getAjaxResp("服务器异常，请稍后重试！");

@@ -4,6 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Request;
 use think\Exception;
+use app\index\model\TypeList;
 
 class Type extends BaseController {
 	
@@ -18,8 +19,8 @@ class Type extends BaseController {
 	public function item() {
 		$request = Request::instance();
 		if($request->isAjax()) {			
-			$type = model('typeList');
-			$list = $type->order('id','asc')->select();
+			$type = new TypeList();
+			$list = $type->getItemList();
 			$this->assign([
 					'list' => $list,
 			]);
@@ -37,11 +38,7 @@ class Type extends BaseController {
 			if(!empty($name)) {
 				$type = model('typeList');
 				try {
-					$type->data([
-							'name' => $name,
-							'description' => $description,
-					]);
-					$type->save();
+					$type->addItem($name, $description);
 					return $this->getAjaxResp('success', true);
 				} catch (Exception $e) {
 					return $this->getAjaxResp('服务器错误，请重试！');
@@ -63,11 +60,7 @@ class Type extends BaseController {
 			if(!empty($name)) {
 				$type = model('typeList');
 				try {
-					$type->where('id', $_id)
-						->update([
-						'name' => $name,
-						'description' => $description,
-					]);
+					$type->updateItem($_id, $name, $description);
 					return $this->getAjaxResp('success', true);
 				} catch (Exception $e) {
 					return $this->getAjaxResp('服务器错误，请重试！');

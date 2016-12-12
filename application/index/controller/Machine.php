@@ -10,9 +10,8 @@ class Machine extends BaseController {
 	public function index()
 	{
 		$request = Request::instance();
-		$type = TypeList::all(function($query) {
-			$query->order('id', 'asc');
-		});
+		$m_typeList = new TypeList();
+		$type = $m_typeList->getItemList();
 		$this->assign([
 				'title' => '机房管理',
 				'types' => $type,
@@ -25,10 +24,9 @@ class Machine extends BaseController {
 		$request = Request::instance();
 		if($request->isAjax()) {
 			$mach = model('machine');
-			$list = $mach->order('name','asc')->select();
-			$type = TypeList::all(function($query) {
-				$query->order('id', 'asc');
-			});
+			$m_typeList = new TypeList();
+			$list = $mach->getItemList();
+			$type = $m_typeList->getItemList();
 			foreach ($list as $i) {
 				foreach ($type as $j) {
 					if($j->id == $i->type) {
@@ -57,13 +55,7 @@ class Machine extends BaseController {
 			if(!empty($add_name) && !empty($add_no) && !empty($add_mac) && !empty($add_type)) {
 				try {
 					$mach = model('machine');
-					$mach->data([
-							'name' => $add_name,
-							'no' => $add_no,
-							'mac' => $add_mac,
-							'type' => $add_type,
-					]);
-					$mach->save();
+					$mach->addItem($add_name, $add_no, $add_mac, $add_type);
 					return $this->getAjaxResp("success", true);
 				} catch (Exception $e) {
 					$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
@@ -88,8 +80,7 @@ class Machine extends BaseController {
 			if(!empty($_id)) {
 				try {
 					$mach = model('machine');
-					$mach->where('id',$_id)
-						->delete();
+					$mach->deleteItem($_id);
 					// TODO: del
 					
 					return $this->getAjaxResp("success",true);
@@ -113,11 +104,7 @@ class Machine extends BaseController {
 			if(!empty($_id) && !empty($_mac) && !empty($_type)) {
 				try {
 					$mach = model('machine');
-					$mach->where('id',$_id)
-					->update([
-							'mac' => $_mac,
-							'type' => $_type,
-					]);	
+					$mach->updateItem($_id, $_mac, $_type);
 					return $this->getAjaxResp("success",true);
 				} catch (Exception $e) {
 					return $this->getAjaxResp("服务器异常，请稍候重试！");

@@ -233,20 +233,20 @@ return [
     ],
 
     //分页配置
-    'paginate'               => [
+    'paginate'					=> [
         'type'      => 'bootstrap',
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
 		
 	//全局替换
-	'view_replace_str' => [
+	'view_replace_str'			=> [
 			'__PUBLIC__'=>'/',
 			'__STATIC__'=>'/static',
 			'__ROOT__' => '/',
 	],
 		
-	'captcha' => [
+	'captcha'					=> [
 	// 验证码字符集合
 			'codeSet' => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY',
 			// 验证码字体大小(px)
@@ -264,8 +264,15 @@ return [
 	],
 		
 	//自定义设置
-	'customize' => [
+	'customize'				=> [
 			//登录超时时间，秒
 			'expire' => 1200,
+	],
+		
+	//Excel配置
+	'excel'					=> [
+			'library' => 'PHPExcel.PHPExcel',
+			'type' => 'Excel2007',
+			'sheet' => 'Sheet1',
 	],
 ];

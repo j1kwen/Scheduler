@@ -39,12 +39,12 @@ class Type extends BaseController {
 				$type = model('typeList');
 				try {
 					$type->addItem($name, $description);
-					return $this->getAjaxResp('success', true);
+					return getAjaxResp('success', true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp('服务器错误，请重试！');
+					return getAjaxResp('服务器错误，请重试！');
 				}
 			} else {
-				return $this->getAjaxResp();
+				return getAjaxResp();
 			}	
 		} else {
 			$this->error();
@@ -61,12 +61,12 @@ class Type extends BaseController {
 				$type = model('typeList');
 				try {
 					$type->updateItem($_id, $name, $description);
-					return $this->getAjaxResp('success', true);
+					return getAjaxResp('success', true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp('服务器错误，请重试！');
+					return getAjaxResp('服务器错误，请重试！');
 				}
 			} else {
-				return $this->getAjaxResp('参数错误！');
+				return getAjaxResp('参数错误！');
 			}
 		} else {
 			$this->error();

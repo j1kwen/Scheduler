@@ -56,17 +56,17 @@ class Machine extends BaseController {
 				try {
 					$mach = model('machine');
 					$mach->addItem($add_name, $add_no, $add_mac, $add_type);
-					return $this->getAjaxResp("success", true);
+					return getAjaxResp("success", true);
 				} catch (Exception $e) {
 					$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
 					if($e_msg == "1062") {						
-						return $this->getAjaxResp("机房号或预约编号已存在！");
+						return getAjaxResp("机房号或预约编号已存在！");
 					} else {
-						return $this->getAjaxResp("未知错误，请稍候重试！");
+						return getAjaxResp("未知错误，请稍候重试！");
 					}
 				}
 			} else {
-				return $this->getAjaxResp();
+				return getAjaxResp();
 			}
 		} else {
 			$this->error();
@@ -83,12 +83,12 @@ class Machine extends BaseController {
 					$mach->deleteItem($_id);
 					// TODO: del
 					
-					return $this->getAjaxResp("success",true);
+					return getAjaxResp("success",true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp("服务器异常，请稍候重试！");
+					return getAjaxResp("服务器异常，请稍候重试！");
 				}
 			} else {
-				return $this->getAjaxResp();
+				return getAjaxResp();
 			}
 		} else {
 			$this->error();
@@ -105,12 +105,12 @@ class Machine extends BaseController {
 				try {
 					$mach = model('machine');
 					$mach->updateItem($_id, $_mac, $_type);
-					return $this->getAjaxResp("success",true);
+					return getAjaxResp("success",true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp("服务器异常，请稍候重试！");
+					return getAjaxResp("服务器异常，请稍候重试！");
 				}
 			} else {
-				return $this->getAjaxResp();
+				return getAjaxResp();
 			}
 		} else {
 			$this->error();

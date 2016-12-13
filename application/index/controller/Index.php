@@ -10,15 +10,7 @@ class Index extends BaseController
     {
     	$term = model('term');
     	$item = $term->where('is_cur',1)->find();
-    	$rep_week = [
-    			'日',
-    			'一',
-    			'二',
-    			'三',
-    			'四',
-    			'五',
-    			'六'
-    	];
+    	$rep_week = ['日', '一', '二', '三', '四', '五', '六'];
     	if(isset($item)) {
     		$d_term = date_create($item->start);
     		$d_now = date_create();

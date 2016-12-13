@@ -39,17 +39,17 @@ class Term extends BaseController {
 				$term = model('term');
 				try {
 					$term->addItem($year, $term_, $date_);
-					return $this->getAjaxResp("success", true);
+					return getAjaxResp("success", true);
 				} catch (Exception $e) {
 					$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
 					if($e_msg == "1062") {						
-						return $this->getAjaxResp("该学期已存在！");
+						return getAjaxResp("该学期已存在！");
 					} else {
-						return $this->getAjaxResp("未知错误，请稍候重试！");
+						return getAjaxResp("未知错误，请稍候重试！");
 					}
 				}
 			} else {
-				return $this->getAjaxResp("param error");
+				return getAjaxResp("param error");
 			}
 		} else {
 			$this->error();
@@ -68,12 +68,12 @@ class Term extends BaseController {
 					
 					// TODO: delete other info about this term
 					
-					return $this->getAjaxResp("success", true);
+					return getAjaxResp("success", true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp("服务器异常，请稍后重试！");
+					return getAjaxResp("服务器异常，请稍后重试！");
 				}
 			} else {
-				return $this->getAjaxResp("param error");
+				return getAjaxResp("param error");
 			}
 		} else {
 			$this->error();
@@ -88,12 +88,12 @@ class Term extends BaseController {
 				$term = model('term');
 				try {
 					$term->setCurrent($s_id);
-					return $this->getAjaxResp("success", true);
+					return getAjaxResp("success", true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp("服务器异常，请稍后重试！");
+					return getAjaxResp("服务器异常，请稍后重试！");
 				}
 			} else {
-				return $this->getAjaxResp("param error");
+				return getAjaxResp("param error");
 			}
 		} else {
 			$this->error();
@@ -109,12 +109,12 @@ class Term extends BaseController {
 				$term = model('term');
 				try {
 					$term->updateItem($_id, $_date);
-					return $this->getAjaxResp("success", true);
+					return getAjaxResp("success", true);
 				} catch (Exception $e) {
-					return $this->getAjaxResp("服务器异常，请稍后重试！");
+					return getAjaxResp("服务器异常，请稍后重试！");
 				}
 			} else {
-				return $this->getAjaxResp("param error");
+				return getAjaxResp("param error");
 			}
 		} else {
 			$this->error();

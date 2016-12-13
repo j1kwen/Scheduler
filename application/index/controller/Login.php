@@ -33,7 +33,7 @@ class Login extends Controller
 	        if (!empty($_user) && !empty($_pwd) && !empty($_code)) {
 	        	if(!captcha_check($_code)) {
 	        		// code error
-	        		return $this->getAjaxResp("验证码错误！");
+	        		return getAjaxResp("验证码错误！");
 	        	}
 	        	$auth = new Auth();
 	        	if($auth->authUser($_user, $_pwd, $request->ip())) {
@@ -44,10 +44,10 @@ class Login extends Controller
                         'msg' => 'success',
                     ]);
 	        	} else {
-	        		return $this->getAjaxResp("用户名或密码错误!");
+	        		return getAjaxResp("用户名或密码错误!");
 	        	}
 	        } else {
-	            return $this->getAjaxResp("请输入完整信息!", false);
+	            return getAjaxResp("请输入完整信息!", false);
 	        }
     	} else {
     		$this->error();
@@ -75,11 +75,11 @@ class Login extends Controller
     							'url' => url('index/login/index'),
     					]);
     				} else {
-    					return $this->getAjaxResp('原密码错误，请重新输入！');
+    					return getAjaxResp('原密码错误，请重新输入！');
     				}
     			} else {
     				// error user
-    				return $this->getAjaxResp('参数非法，请重试！');
+    				return getAjaxResp('参数非法，请重试！');
     			}
     		} else {
     			// require login

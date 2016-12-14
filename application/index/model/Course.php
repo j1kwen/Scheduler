@@ -3,6 +3,7 @@ namespace app\index\model;
 
 use think\Model;
 use think\Exception;
+use app\common\MyException;
 
 class Course extends Model {
 	
@@ -48,7 +49,7 @@ class Course extends Model {
 			$datAll = [];
 			foreach($list as $row) {
 				if(count($row) != count($this->field) - 2) {
-					throw new Exception();
+					throw new MyException('导入的文件好像有问题…', -1);
 				}
 				$dat = [];
 				foreach($row as $k=>$cell) {

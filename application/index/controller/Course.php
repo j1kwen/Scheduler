@@ -8,6 +8,7 @@ use think\View;
 use think\Session;
 use think\Exception;
 use app\index\model\TypeList;
+use app\common\MyException;
 
 class Course extends BaseController {
 	
@@ -167,6 +168,8 @@ class Course extends BaseController {
 						'res' => $res,
 						'term' => $term['code'],
 					]);
+				} catch (MyException $em) {					
+					return getAjaxResp($em->getData('msg'));
 				} catch(Exception $e) {
 					$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
 					if($e_msg == "1062") {

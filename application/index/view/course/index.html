@@ -12,11 +12,7 @@
 			<h4>本学期课程列表&nbsp;<small>Course</small></h4>
 		</div>		
 		<div class="panel-body">
-			<button type="button" title="添加课程" class="btn btn-info" data-toggle="modal" data-target="#addModal">
-				<span class="glyphicon glyphicon-plus"></span>
-			</button>
-			&nbsp;
-			<button{:empty($term)?' disabled':''} type="button" class="btn btn-success" title="从Excel文件批量导入" data-toggle="modal" data-target="#importModal">
+			<button{:empty($term)?' disabled':''} type="button" class="btn btn-success" title="从Excel文件导入" data-toggle="modal" data-target="#importModal">
 				<span class="glyphicon glyphicon-import"></span>
 			</button>
 			&nbsp;
@@ -32,7 +28,6 @@
 		<div data-area="course" class="panel-table">
 		</div>
 	</div>
-	
 	<!-- Modal import -->
 	<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -47,7 +42,7 @@
 	      	  <div class="alert alert-danger" role="alert"><strong>错误！</strong>未设置学期，无法导入课程！</div>
 {else/}
 			  <div class="alert alert-info" role="alert"><strong>注意！</strong>请保证导入表格的格式正确，点击查看
-			  	<a class="alert-link ext-alert-load" href="javascript:void(0);" data-url="{:url('index/resource/format','part=course')}">格式说明</a>
+			  	<a class="alert-link ext-alert-load" href="javascript:void(0);" data-url="{:url('index/resource/text','part=course')}">格式说明</a>
 			  </div>
 {/if}
 			  <div class="form-group has-feedback">

@@ -1,14 +1,54 @@
-<h4>Overflowing text to show scroll behavior</h4>
-<p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-<p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-<p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-<p>The icon's source for this project: <a href="http://glyphicons.com/" target="_blank">Glyphicons</a></p>
+<div class="alert alert-success" role="alert">该系统可实现排课自动化，按照约定的排课规则进行最优化排课。</div>
+<h3>固定（静态）数据</h3>
+<h5>系统中某些数据是可以长久不变的，比如机房数据、类型数据。</h5>
+<div class="callout callout-info">
+	<h4>不变的数据在初次部署系统时设置</h4>
+	<p>由于机房信息、课程类型信息等数据长期保持不变，所以这两部分信息需手动添加，只需要在初次部署该系统的时候添加即可，与学期无关。</p>
+</div>
+<h3>学期</h3>
+<h5>排课系统的运行周期，除固定数据外所有数据均依赖于学期。</h5>
+<div class="callout callout-info">
+	<h4>请保证系统内设置的学期与实际相符</h4>
+	<p>系统会根据当前时间和设置的学期的开学时间计算当前周数，学期可以随意切换不会影响后台数据。请注意添加学期时开学日要选择周一，否则周数计算会出错。</p>
+</div>
+<h3>必要的原始数据</h3>
+<h5>设置了学期后需要导入原始数据才可以进行排课，原始数据与学期相关。</h5>
+<div class="callout callout-info">
+	<h4>排课前需要先设定当前学期并为该学期导入两个原始数据表：</h4>
+	<p>1.<a href="{:url('index/course/index')}">教师排课登记表</a>：</p>
+	<p>该表格为教师登记的所有课程，每门课程拥有学期内唯一的课程编号，课程编号将显示在课程表中。</p>
+	<p>2.<a href="{:url('index/plan/index')}">教师课程安排表</a>：</p>
+	<p>该表格记录了上述课程的具体上课时间，需要在导入1表并锁定之后才可以导入该表</p>
+</div>
+<h5>上述两表依赖学期且格式严格，具体格式请到其管理页面查看。原始数据提供分类汇总功能。</h5>
+<h3>开始排课</h3>
+<h5>固定数据、学期、原始数据设置、导入完成后，即可执行排课任务。</h5>
+<div class="callout callout-info">
+	<h4>排课工作需完成前置的多项准备工作</h4>
+	<p>系统会根据预设的排课规则进行排课，完成后可查看课表，可导出指定周的课表，并可以针对个别课程进行调整，但已经上完的课不可修改，只能修改第二天及以后的课程。</p>
+	<p>可设置全校性停课（假期、大型活动等）时段，系统会将该时段内的课程重排（不会影响其他课程）。</p>
+</div>
+<h3>权限</h3>
+<h5>系统分两种权限，管理员和游客。管理员拥有完全权限，游客只能执行一些只读操作（查看、导出课表等）。</h5>
+<div class="callout callout-info">
+	<h4>管理员需要登录才能使用，游客不需账号</h4>
+	<p>内置两种权限，其中管理员需要登录管理员帐号，提供修改密码功能，默认保存30分钟的登录状态（即无操作30分钟之内可自动登录），所以在使用完系统之后请及时点击退出按钮退出帐户。</p>
+	<p>游客权限不需要帐号密码</p>
+</div>
+<h3>框架及第三方库</h3>
+<h5>该项目使用了第三方开源框架及运行库</h5>
+<div class="callout callout-info">
+	<h4>开源框架及插件</h4>
+	<p>该项目基于<a href="http://www.thinkphp.cn/" target="_blank">ThinkPHP</a>框架、<a href="https://twitter.com/getbootstrap" target="_blank">Bootstrap</a>框架，并使用了 <a href="http://glyphicons.com/" target="_blank">Glyphicons</a>的图标资源</p>
+	<p>该项目使用了<a href="http://phpexcel.codeplex.com/" target="_blank">PHPExcel</a>插件</p>
+</div>
+<hr/>
+<div class="callout callout-success label-lg">
+	<h4 style="margin-bottom: 15px;">开发小组成员</h4>
+	<p><span class="label label-info" style="font-size: 100%;">男神</span>&nbsp;<a href="http://blog.dogest.cn" target="_blank"><span class="glyphicon glyphicon-link"></span></a></p>
+	<p><span class="label label-success" style="font-size: 100%;">狗豪</span>&nbsp;</p>
+	<p><span class="label label-warning" style="font-size: 100%;">狗乾</span>&nbsp;</p>
+</div>
 <hr/>
 <div class="text-center">
 	Copyright © 2016-2017&nbsp;

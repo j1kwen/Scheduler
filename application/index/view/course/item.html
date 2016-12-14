@@ -42,7 +42,6 @@
 					<td>{$item.teach_name}</td>
 					<td>{$item.teach_tel}</td>
 					<td>
-						<button type="button" class="btn btn-sm btn-warning btn-mod-course" title="修改课程"><span class="glyphicon glyphicon-pencil"></span></button> 
 						<button type="button" class="btn btn-sm btn-danger btn-del btn-del-course" title="删除课程"><span class="glyphicon glyphicon-trash"></span></button>
 					</td>
 				</tr>
@@ -51,7 +50,6 @@
 		</table>
 {/if}
 <script>
-	var mod_course = "{:url('index/course/modify')}";
 	var del_course = "{:url('index/course/del')}";
 </script>
 <script type="text/javascript" src="__STATIC__/js/course.js"></script>

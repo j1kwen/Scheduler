@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\Request;
+use think\View;
 
 class Resource extends BaseController {
 	
@@ -22,11 +23,15 @@ class Resource extends BaseController {
 		]);
 	}
 	
-	public function format() {
+	public function text() {
 		$request = Request::instance();
 		if(Request::instance()->isAjax()) {
 			$_part = $request->param('part');
-			return $this->fetch('public/about');
+			try {				
+				return $this->fetch('text/'.$_part);
+			} catch (\think\exception\TemplateNotFoundException $e) {
+				return $this->fetch('public/error');
+			}
 		} else {
 			$this->error();
 		}

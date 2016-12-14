@@ -44,6 +44,14 @@ class Machine extends Model {
 		}
 	}
 	
+	public function deleteMultiItems($ids) {
+		try {
+			$this->destroy($ids);
+		} catch (Exception $e) {
+			throw $e;
+		}
+	}
+	
 	public function deleteItem($id) {
 		try {			
 			$this->where('id',$id)

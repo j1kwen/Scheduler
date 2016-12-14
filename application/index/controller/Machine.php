@@ -95,6 +95,28 @@ class Machine extends BaseController {
 		}
 	}
 	
+	public function muldel() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$_id = $request->param('id');
+			if(!empty($_id)) {
+				try {
+					$mach = model('machine');
+					$mach->deleteMultiItems($_id);
+					// TODO: del
+	
+					return getAjaxResp("success",true);
+				} catch (Exception $e) {
+					return getAjaxResp("服务器异常，请稍候重试！");
+				}
+			} else {
+				return getAjaxResp();
+			}
+		} else {
+			$this->error();
+		}
+	}
+	
 	public function modify() {
 		$request = Request::instance();
 		if($request->isAjax()) {

@@ -266,7 +266,7 @@ return [
 	//自定义设置
 	'customize'				=> [
 			//登录超时时间，秒
-			'expire' => 1200,
+			'expire' => 2400,
 	],
 		
 	//Excel配置

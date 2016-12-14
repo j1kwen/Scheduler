@@ -11,6 +11,9 @@ body.login-body {
 	background-repeat: no-repeat;
 	background-position: inherit;
 }
+.delete-line {
+	text-decoration: line-through;
+}
 .table table { 
 	text-align: center;
 	margin-bottom: 0px;

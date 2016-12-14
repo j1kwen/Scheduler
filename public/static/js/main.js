@@ -12,6 +12,11 @@ $(document).ready(function() {
 			title: title,
 			content: content,
 			type: 'red',
+			buttons: {
+				确定: {
+					btnClass: 'btn btn-danger',
+				},
+			},
 		});
 	}
 	function setWaiting(btn, wat) {
@@ -22,6 +27,12 @@ $(document).ready(function() {
 		$(btn).removeClass('disabled');
 		$(btn).text(ret);
 	}
+	$("input[type='file']").change(function() {
+		var filename = $(this).val();
+		filename = filename.replace(/\\/g, "/");
+		filename = filename.substr(filename.lastIndexOf("/") + 1);
+		$(this).siblings(".form-filename").val(filename);
+	});
 	$(window).on('scroll',function(){
 		var st = $(document).scrollTop();
 		if(st > 0){
@@ -49,6 +60,7 @@ $(document).ready(function() {
 			}
 		});
 		if(isok) {
+			//normal
 			var fields = $(this).parents("form").find("[name]");
 			var _url = $(this).parents("form").attr('action');
 			var _data = "";
@@ -81,12 +93,113 @@ $(document).ready(function() {
 			});
 		}
 	});
-	$("input").blur(function() {
-		$(this).val($(this).val().trim());
+	$("button.btn-file-submit").click(function() {
+		var nec = $(this).parents("form").find(".has-feedback");
+		var isok = true;
+		nec.each(function() {
+			var ipt = $(this).find("input,select");
+			if(ipt.val() == null || ipt.val() == '') {
+				ipt.after('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+				$(this).addClass("has-error");
+				if(isok) {
+					ipt.focus();
+				}
+				isok = false;
+			}
+		});
+		if(!isok) {
+			return true;
+		}
+		// binary
+		var _url = $(this).parents("form").attr('action');
+		var formData = new FormData();
+		var fields = $(this).parents("form").find("[name]");
+		var btn = $(this);
+		fields.each(function() {
+			if($(this).attr('type') == 'file') {						
+				formData.append($(this).attr("name").trim(), $(this)[0].files[0]);
+			} else {
+				formData.append($(this).attr("name").trim(), $(this).val().trim());
+			}
+		});
+		$.ajax({ 
+			url : _url, 
+			type : 'POST', 
+			data : formData, 
+			processData : false, 
+			contentType : false,
+			beforeSend:function(){
+				setWaiting(btn, '上传中…');
+			},
+			success : function(data) { 
+				setReset(btn, '上传');
+				$(btn).parents(".modal[role='dialog']").modal('hide');
+				if(data.success) {					
+					$.confirm({
+						closeIcon: true,
+						closeIconClass: 'glyphicon glyphicon-remove',
+						icon: 'glyphicon glyphicon-eye-open',
+						columnClass: "xlarge",
+						backgroundDismiss: false,
+						title: "数据预览",
+						content: data.content,
+						buttons: {
+							取消: {
+								btnClass: 'btn btn-default',
+							},
+							导入: {
+								btnClass: 'btn btn-info',
+								action: function() {
+									var titled = $("#checkHasTitlePreview").get(0).checked;
+									$.ajax({ 
+										url : data.url, 
+										type : 'POST', 
+										data : "key=" + data.key + "&titled=" + titled,
+										success : function(s_data) {
+											if(s_data.success) {
+												$.confirm({
+													icon: 'glyphicon glyphicon-ok',
+													title: '导入成功',
+													content: s_data.msg,
+													type: 'green',
+													buttons: {
+														确定: {
+															btnClass: "btn btn-success",
+														},
+													},
+												});
+												loadItem();
+											} else {
+												showErrorAlert('错误', s_data.msg);
+											}
+										},
+										error : function(responseStr) { 
+											showErrorAlert('错误', '请求失败，请重试！');
+										} 
+									});
+								},
+							},
+						},
+					});
+				} else {
+					showErrorAlert('错误',data.msg);
+				}
+			}, 
+			error : function(responseStr) { 
+				showErrorAlert('错误', '请求失败，请重试！');
+				setReset(btn, '上传');
+			} 
+		});
+	});
+	$("input").change(function() {
 		if($(this).val() != '') {
 			$(this).parents(".has-error").removeClass("has-error")
 				.find("span.form-control-feedback").remove();
 		}
+	});
+	
+	$("input").blur(function() {
+		$(this).val($(this).val().trim());
 	});
 
 	$("#aboutModal").on("shown.bs.modal", function() {
@@ -216,6 +329,74 @@ $(document).ready(function() {
 		$(this).find("span.glyphicon").addClass("refreshing");
 		loadItem();
 	});
+	$(".btn-delete-select").click(function() {
+		var _area = $(this).attr('data-table');
+		var _cnt = 0;
+		var queue = new Array();
+		$("div[data-area='" + _area + "'] table>tbody>tr>td>input[type='checkbox']").each(function() {
+			if($(this).get(0).checked) {
+				_cnt++;
+				queue.push(this);
+			}
+		});
+		if(_cnt > 0) {
+			var _url = $(this).attr('data-url');
+			$.confirm({
+				type: 'red',
+				icon: 'glyphicon glyphicon-trash',
+				title: '批量删除',
+				content: '确实要删除选中的<strong>' + _cnt + '</strong>项吗？',
+				buttons: {
+					取消: {
+						btnClass: "btn btn-default",
+					},
+					确定: {
+						btnClass: "btn btn-danger",
+						action: function() {
+							var ids = '';
+							for(i in queue) {
+								if(i != 0) {
+									ids += ","
+								}
+								ids += $(queue[i]).parent().parent().attr('data-id');
+							}
+							$.ajax({
+								url: _url,
+								type: "POST",
+								data: "id=" + ids,
+								success: function(data) {
+									if(data.success) {
+										for(i in queue) {
+											$(queue[i]).parent().parent().fadeOut("slow",function() {
+												$(this).remove();
+											});
+										}
+									} else {
+										showErrorAlert('错误', data.msg);
+									}
+								},
+								error: function() {
+									showErrorAlert('错误', '请求失败，请重试！');
+								}
+							});
+						},
+					}
+				}
+			});
+		} else {
+			$.confirm({
+				type: 'red',
+				icon: 'glyphicon glyphicon-trash',
+				title: '批量删除',
+				content: '啥都没选啊……',
+				buttons: {
+					确定: {
+						btnClass: "btn btn-danger",
+					}
+				}
+			});
+		}
+	});
 	$('.form_date').datetimepicker({
 	    language:  'zh-CN',
 	    weekStart: 1,
@@ -230,6 +411,23 @@ $(document).ready(function() {
         var speed=300;//滑动的速度
         $('body,html').animate({ scrollTop: 0 }, speed);
         return false;
+	});
+	$(".ext-alert-load").click(function() {
+		var _url = $(this).attr('data-url');
+		var _title = $(this).text();
+		$.alert({
+			title: _title,
+			closeIcon: true,
+			closeIconClass: 'glyphicon glyphicon-remove',
+			icon: 'glyphicon glyphicon-comment',
+			columnClass: "medium",
+			content: 'url:' + _url,
+			buttons: {
+				确定: {
+					btnClass: 'btn btn-primary',
+				}
+			},
+		});
 	});
 	function loadItem() {
 		if(typeof get_item =='undefined') {

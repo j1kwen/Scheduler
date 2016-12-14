@@ -1,0 +1,58 @@
+		<!-- Table -->
+{if condition="empty($term)"}
+		<div class="list-empty">
+			<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;当前未设置学期
+		</div>
+{elseif condition="empty($list)"/}
+{include file="public/list_empty" /}
+{else /}
+		<table class="table table-bordered text-center table-responsive table-hover">
+			<thead>
+				<tr>
+					<th><input type="checkbox" class="select-all" title="全选"/></th>		
+					<th>编号</th>
+					<th>学生院系</th>
+					<th>专业</th>
+					<th>班级</th>
+					<th>课程名</th>
+					<th>课程类型</th>
+					<th>人数</th>
+					<th>学时</th>
+					<th>教师院系</th>
+					<th>教师</th>
+					<th>联系电话</th>
+					<th>操作</th>
+				</tr>
+									
+
+			</thead>
+			<tbody>
+{foreach $list as $item}
+				<tr data-id="{$item.id}">
+					<td><input type="checkbox"/></td>
+					<td>{$item.no}</td>
+					<td>{$item.col}</td>
+					<td>{$item.pro}</td>
+					<td>{$item.cls}</td>
+					<td>{$item.name}</td>
+					<td>{$item.tName}</td>
+					<td>{$item.c_stu}</td>
+					<td>{$item.c_class}</td>
+					<td>{$item.teach_col}</td>
+					<td>{$item.teach_name}</td>
+					<td>{$item.teach_tel}</td>
+					<td>
+						<button type="button" class="btn btn-sm btn-warning btn-mod-course" title="修改课程"><span class="glyphicon glyphicon-pencil"></span></button> 
+						<button type="button" class="btn btn-sm btn-danger btn-del btn-del-course" title="删除课程"><span class="glyphicon glyphicon-trash"></span></button>
+					</td>
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+{/if}
+<script>
+	var mod_course = "{:url('index/course/modify')}";
+	var del_course = "{:url('index/course/del')}";
+</script>
+<script type="text/javascript" src="__STATIC__/js/course.js"></script>
+<script type="text/javascript" src="__STATIC__/js/table-select.js"></script>

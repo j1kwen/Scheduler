@@ -6,24 +6,73 @@
 <body>
 {include file="public:topbar" /}
 <div class="container">
-		<div class="list-empty"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Developing……</div>
-
-<!-- 	<div class="panel panel-info"> -->
-<!-- 		<div class="panel-heading"> -->
-<!-- 			<h4>机房列表&nbsp;<small>Machine</small></h4> -->
-<!-- 		</div>		 -->
-<!-- 		<div class="panel-body"> -->
-<!-- 			<button type="button" title="添加机房" class="btn btn-info" data-toggle="modal" data-target="#addModal"> -->
-<!-- 				<span class="glyphicon glyphicon-plus"></span> -->
-<!-- 			</button> -->
-<!-- 			&nbsp; -->
-<!-- 			<button type="button" class="btn btn-default btn-refresh" title="刷新"> -->
-<!-- 				<span class="glyphicon glyphicon-refresh"></span> -->
-<!-- 			</button> -->
-<!-- 		</div> -->
-<!-- 		<div data-area="machine" class="panel-table"> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+{$alert|default=''}
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4>本学期课程列表&nbsp;<small>Course</small></h4>
+		</div>		
+		<div class="panel-body">
+			<button type="button" title="添加课程" class="btn btn-info" data-toggle="modal" data-target="#addModal">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+			&nbsp;
+			<button{:empty($term)?' disabled':''} type="button" class="btn btn-success" title="从Excel文件批量导入" data-toggle="modal" data-target="#importModal">
+				<span class="glyphicon glyphicon-import"></span>
+			</button>
+			&nbsp;
+			<button type="button" title="删除选中项" data-table="course" class="btn btn-danger btn-delete-select" data-url="{:url('index/course/muldel')}">
+				<span class="glyphicon glyphicon-trash"></span>
+			</button>
+			&nbsp;
+			<button type="button" class="btn btn-default btn-refresh" title="刷新">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</button>
+			
+		</div>
+		<div data-area="course" class="panel-table">
+		</div>
+	</div>
+	
+	<!-- Modal import -->
+	<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="importModalLabel"><span class="glyphicon glyphicon-import"></span>&nbsp;导入文件</h4>
+	      </div>
+	      <form role="form" class="form-horizontal" action="{:url('index/course/upload')}" method="POST">
+	      <div class="modal-body">
+{if condition="empty($term)"}
+	      	  <div class="alert alert-danger" role="alert"><strong>错误！</strong>未设置学期，无法导入课程！</div>
+{else/}
+			  <div class="alert alert-info" role="alert"><strong>注意！</strong>请保证导入表格的格式正确，点击查看
+			  	<a class="alert-link ext-alert-load" href="javascript:void(0);" data-url="{:url('index/resource/format','part=course')}">格式说明</a>
+			  </div>
+{/if}
+			  <div class="form-group has-feedback">
+			    <label for="inputName" class="col-sm-2 col-xs-12 control-label">Excel表</label>
+			    <div class="col-sm-8 col-xs-9">
+			    	<input readonly type="text" class="form-control form-filename" id="inputName" placeholder="未选择文件……">
+			    	<input id="fileInput" type="file" name="file" style="display: none;"/>
+			    </div>
+			    <div class="col-sm-2 col-xs-3">
+			    	<label{:empty($term)?' disabled':''} for="fileInput" class="btn btn-default" title="选择文件"><span class="glyphicon glyphicon-file"></span></label>
+			    </div>
+			    <div class="col-sm-10 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+			    <p class="help-block">支持的文件格式：.xls .xlsx</p>
+			    </div>
+			  </div>
+			 
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button"{:empty($term)?' disabled':''} class="btn btn-primary btn-file-submit">上传</button>
+	      </div>
+		</form>
+	    </div>
+	  </div>
+	</div>
 </div>
 {include file="public:footer" /}
 <script>

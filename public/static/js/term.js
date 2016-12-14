@@ -10,6 +10,11 @@ function showErrorAlert(title, content) {
 		title: title,
 		content: content,
 		type: 'red',
+		buttons: {
+			确定: {
+				btnClass: 'btn btn-danger',
+			},
+		},
 	});
 }
 function setWaiting(btn, wat) {

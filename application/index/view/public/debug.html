@@ -2,24 +2,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-{include file="public/header"}
+{include file="public/header" /}
 </head>
 <body>
+{include file="public/topbar" /}
 <div class="container">
-	<div class="" role="tooltip" style="width:25%">
-		<div class="arrow"></div>
-		<h3 class="popover-title">Title</h3>
-		<div class="popover-content">
-		
-			Content
-		</div>
-		<hr/>
-		<div class="popover-footer">
-			<button class="btn btn-sm btn-default">取消</button>
-			<button class="btn btn-sm btn-danger">确定</button>
+	<form action="{:url('index/resource/upload')}" method="POST" enctype="multipart/form-data">
+		<div class="form-group">
+		    <label for="exampleInputFile">上传文件</label>
+		    <input type="file" name="file" id="exampleInputFile" style="display: none;">
+		    <label class="form-filename">未选择文件</label>
+		    <label for="exampleInputFile" class="btn btn-success">+</label>
+		    <p class="help-block">支持格式：.xls .xlsx</p>
+		  </div>
+	</form>
+	<br/>
+		<button class="btn btn-default" id="submit-file">上传</button>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4>学期信息&nbsp;<small>Term</small></h4>
+		</div>		
+		<div class="panel-body">
+			<div id="echo-area">
+			</div>
+			
 		</div>
 	</div>
 </div>
-{include file="public/footer"}
+{include file="public/footer" /}
+<script src="__STATIC__/js/debug.js"></script>
 </body>
 </html>

@@ -4,24 +4,26 @@
 {else /}
 		<table class="table table-bordered text-center table-responsive table-hover">
 			<thead>
-			</thead>
 				<tr>
+					<th><input type="checkbox" class="select-all" title="全选"/></th>
 					<th>机房号</th>
 					<th>预约编号</th>
 					<th>机器数量</th>
 					<th>课程类型</th>
 					<th>操作</th>
 				</tr>
+			</thead>
 			<tbody>
 {foreach $list as $item}
 				<tr data-id="{$item.id}">
+					<td><input type="checkbox"/></td>
 					<td><span class="label label-default">{$item.name}</span></td>
 					<td>{$item.no}</td>
 					<td>{$item.mac}</td>
 					<td>{$item.tName}</td>
 					<td>
 						<button type="button" class="btn btn-sm btn-warning btn-mod-machine" title="修改机房"><span class="glyphicon glyphicon-pencil"></span></button> 
-						<button type="button" class="btn btn-sm btn-danger btn-del-machine" title="删除机房"><span class="glyphicon glyphicon-trash"></span></button>
+						<button type="button" class="btn btn-sm btn-danger btn-del btn-del-machine" title="删除机房"><span class="glyphicon glyphicon-trash"></span></button>
 					</td>
 				</tr>
 {/foreach}
@@ -38,3 +40,4 @@
 	);
 </script>
 <script type="text/javascript" src="__STATIC__/js/machine.js"></script>
+<script type="text/javascript" src="__STATIC__/js/table-select.js"></script>

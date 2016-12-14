@@ -2,7 +2,7 @@
 {if condition="$close"}
 	<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 {/if}
-	<strong>{$title|default='success'}</strong>
+	<strong>{$title|default=''}</strong>
 	{$body|default=''}
 {if condition=:isset($href)}
 	<a href="{$href}" class="alert-link">{$href_text|default='Link'}</a>

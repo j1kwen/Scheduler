@@ -10,13 +10,18 @@ function showErrorAlert(title, content) {
 		title: title,
 		content: content,
 		type: 'red',
+		buttons: {
+			确定: {
+				btnClass: 'btn btn-danger',
+			},
+		},
 	});
 }
 $(".btn-mod-machine").click(function() {
 	var _tr = $(this).parent().siblings().toArray();
-	var _name = $(_tr[0]).find("span").text();
-	var _mac = $(_tr[2]).text();
-	var _type = $(_tr[3]).text();
+	var _name = $(_tr[1]).find("span").text();
+	var _mac = $(_tr[3]).text();
+	var _type = $(_tr[4]).text();
 	var item = $(this).parent().parent();
 	var _id = $(item).attr('data-id').trim();
 	var _tp_lst = new String();
@@ -59,8 +64,8 @@ $(".btn-mod-machine").click(function() {
 						data: "id=" + _id + "&mac=" + m_mac + "&type=" + m_type,
 						success: function(data) {
 							if(data.success) {
-								$(_tr[2]).text(m_mac);
-								$(_tr[3]).text(m_tp_name);
+								$(_tr[3]).text(m_mac);
+								$(_tr[4]).text(m_tp_name);
 							} else {
 								showErrorAlert('错误', data.msg);
 							}
@@ -76,9 +81,9 @@ $(".btn-mod-machine").click(function() {
 });
 $(".btn-del-machine").click(function() {
 	var _tr = $(this).parent().siblings().toArray();
-	var _name = $(_tr[0]).find("span").text();
-	var _mac = $(_tr[2]).text();
-	var _type = $(_tr[3]).text();
+	var _name = $(_tr[1]).find("span").text();
+	var _mac = $(_tr[3]).text();
+	var _type = $(_tr[4]).text();
 	var item = $(this).parent().parent();
 	var _id = $(item).attr('data-id');
 	$.confirm({

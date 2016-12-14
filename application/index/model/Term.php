@@ -69,4 +69,12 @@ class Term extends Model {
 			throw $e;
 		}
 	}
+	
+	public function getCurrentTerm() {
+		return $this->where('is_cur', 1)->find();
+	}
+	
+	public static function getCurTerm() {
+		return db('term')->where('is_cur', 1)->find();
+	}
 }

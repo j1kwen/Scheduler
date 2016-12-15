@@ -133,8 +133,11 @@ $(document).ready(function() {
 			},
 			success : function(data) { 
 				setReset(btn, '上传');
-				$(btn).parents(".modal[role='dialog']").modal('hide');
-				if(data.success) {					
+				if(data.success) {
+					var btnClsImport = 'btn btn-info';
+					if(data.content.indexOf('id="checkHasTitlePreview"') == -1) {
+						btnClsImport = btnClsImport + ' disabled';
+					}
 					$.confirm({
 						closeIcon: true,
 						closeIconClass: 'glyphicon glyphicon-remove',
@@ -148,9 +151,13 @@ $(document).ready(function() {
 								btnClass: 'btn btn-default',
 							},
 							导入: {
-								btnClass: 'btn btn-info',
+								btnClass: btnClsImport,
 								action: function() {
-									var titled = $("#checkHasTitlePreview").get(0).checked;
+									var dom = $("#checkHasTitlePreview").get(0);
+									if(dom == undefined) {
+										return ;
+									}
+									var titled = dom.checked;
 									$.ajax({ 
 										url : data.url, 
 										type : 'POST', 
@@ -169,6 +176,7 @@ $(document).ready(function() {
 													},
 												});
 												loadItem();
+												$(btn).parents(".modal[role='dialog']").modal('hide');
 											} else {
 												showErrorAlert('错误', s_data.msg);
 											}
@@ -371,6 +379,7 @@ $(document).ready(function() {
 												$(this).remove();
 											});
 										}
+										$(".select-all").get(0).checked = false;
 									} else {
 										showErrorAlert('错误', data.msg);
 									}

@@ -4,6 +4,7 @@
 			<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;当前未设置学期
 		</div>
 {elseif condition="empty($list)"/}
+<div class="alert alert-danger" role="alert"><strong>错误！</strong>这个表好像是空的</div>
 {include file="public/list_empty" /}
 {else /}
 <div class="alert alert-info" role="alert">正在导入<strong>课程登记</strong>表，请保证表头列与预览的数据列内容相吻合
@@ -43,7 +44,6 @@
 {/foreach}
 			</tbody>
 		</table>
-{/if}
 <script>
 $(document).ready(function() {
 	if($("#checkHasTitlePreview").get(0).checked) {
@@ -63,3 +63,4 @@ $(document).ready(function() {
 	});
 });
 </script>
+{/if}

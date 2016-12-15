@@ -33,10 +33,10 @@ class Login extends Controller
 	        if (!empty($_user) && !empty($_pwd) && !empty($_code)) {
 	        	if(!captcha_check($_code)) {
 	        		// code error
-	        		return getAjaxResp("验证码错误！");
+	        		return getAjaxResp("验证码错误！", false, -123);
 	        	}
 	        	$auth = new Auth();
-	        	if($auth->authUser($_user, $_pwd, $request->ip())) {
+	        	if($auth->authUser($_user, $_pwd, $request->ip(0, true))) {
 	        		Auth::login($_user, $auth->getName($_user));
                     return json([
                         'success' => true,

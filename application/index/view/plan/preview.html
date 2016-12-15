@@ -1,0 +1,66 @@
+		<!-- Table -->
+{if condition="empty($term)"}
+		<div class="list-empty">
+			<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;当前未设置学期
+		</div>
+{elseif condition="empty($list)"/}
+<div class="alert alert-danger" role="alert"><strong>错误！</strong>这个表好像是空的</div>
+{include file="public/list_empty" /}
+{else /}
+<div class="alert alert-info" role="alert">正在导入<strong>课程登记</strong>表，请保证表头列与预览的数据列内容相吻合
+</div>
+  <div class="form-group" style="margin-top: -15px;">
+    <div class="col-xs-12">
+      <div class="checkbox">
+        <label>
+          <input checked="checked" id="checkHasTitlePreview" type="checkbox"> 这个表格的第一行包含标题（标题行将不会被导入）
+        </label>
+      </div>
+    </div>
+  </div>
+		<table class="table table-preview table-bordered text-center table-responsive table-hover">
+			<thead>
+				<tr class="bg-primary">			
+					<th>编号</th>
+					<th>学生所在院系</th>
+					<th>专业（全称）</th>
+					<th>年级-班级</th>
+					<th>课程名（全称）</th>
+					<th>课程类型</th>
+					<th>总人数</th>
+					<th>实验学时</th>
+					<th>教师院系</th>
+					<th>教师姓名</th>
+					<th>联系电话</th>
+				</tr>
+			</thead>
+			<tbody>
+{foreach name="list" item="item" key="idx"}
+				<tr>
+{foreach $item as $cell}
+					<td>{$cell}</td>
+{/foreach}
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+<script>
+$(document).ready(function() {
+	if($("#checkHasTitlePreview").get(0).checked) {
+		if($("table.table-preview>tbody>tr").size() > 0) {
+			$("table.table-preview>tbody>tr:first").toggleClass('delete-line bg-warning').appendTo($("table.table-preview>thead"));
+		}
+	}
+	$("#checkHasTitlePreview").click(function() {
+		if($("table.table-preview>tbody>tr").size() < 1) {
+			return true;
+		}
+		if($(this).get(0).checked) {
+			$("table.table-preview>tbody>tr:first").toggleClass('delete-line bg-warning').appendTo($("table.table-preview>thead"));
+		} else {
+			$("table.table-preview>thead>tr:last").toggleClass('delete-line bg-warning').prependTo($("table.table-preview>tbody"));
+		}
+	});
+});
+</script>
+{/if}

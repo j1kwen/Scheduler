@@ -129,10 +129,11 @@ function getExcelArray(File $file = null, $delete = true, $trim = true) {
  * @param string $ok 请求是否完成
  * @return \think\response\Json json字符串
  */
-function getAjaxResp($msg="error", $ok=false) {
+function getAjaxResp($msg="error", $ok=false, $code=0) {
 	return json([
 			"success" => $ok,
 			"msg" => $msg,
+			"code" => $code,
 	]);
 }
 

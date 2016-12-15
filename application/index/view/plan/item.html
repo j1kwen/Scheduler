@@ -1,0 +1,54 @@
+		<!-- Table -->
+{if condition="empty($term)"}
+		<div class="list-empty">
+			<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;当前未设置学期
+		</div>
+{elseif condition="empty($course)"/}
+		<div class="list-empty">
+			<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;本学期未导入课程
+		</div>
+{elseif condition="empty($list)"/}
+{include file="public/list_empty" /}
+{else /}
+		<table class="table table-bordered text-center table-responsive table-hover">
+			<thead>
+				<tr>
+					<th><input type="checkbox" class="select-all" title="全选"/></th>		
+					<th>课程编号</th>
+					<th>课程名</th>
+					<th>学院</th>
+					<th>任课老师</th>
+					<th>上课周次</th>
+					<th>时间（周几）</th>
+					<th>节次</th>
+					<th>操作</th>
+				</tr>
+									
+
+			</thead>
+			<tbody>
+{foreach $list as $item}
+				<tr data-id="{$item.id}">
+					<td><input type="checkbox"/></td>
+					<td>{$item.no}</td>
+					<td>{$item.c_mame}</td>
+					<td>{$item.c_col}</td>
+					<td>{$item.c_teacher}</td>
+					<td>{$item.week}</td>
+					<td>{$item.day}</td>
+					<td>{$item.section}</td>
+					<td>
+						<button type="button" class="btn btn-sm btn-warning btn-mod-plan" title="修改上课时间"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button type="button" class="btn btn-sm btn-danger btn-del btn-del-plan" title="删除条目"><span class="glyphicon glyphicon-trash"></span></button>
+					</td>
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+{/if}
+<script>
+	var mod_course = "{:url('index/plan/modify')}";
+	var del_course = "{:url('index/plan/del')}";
+</script>
+<script type="text/javascript" src="__STATIC__/js/plan.js"></script>
+<script type="text/javascript" src="__STATIC__/js/table-select.js"></script>

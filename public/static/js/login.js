@@ -64,7 +64,9 @@ $("#btn-login").click(function() {
 					showErrorAlert('登录失败！', data.msg);
 					$("#inputCaptcha").parent().next().find("img").click();
 					$("input[name='captcha']").val('');
-					$("input[name='password']").val('').focus();
+					if(data.code != -123) {						
+						$("input[name='password']").val('').focus();
+					}
 				}
 			},
 			error: function() {

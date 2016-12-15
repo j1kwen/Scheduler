@@ -3,7 +3,6 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\Request;
-use think\View;
 
 class Resource extends BaseController {
 	

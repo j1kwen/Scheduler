@@ -5,10 +5,13 @@ namespace app\index\model;
 use think\Model;
 use think\Exception;
 use app\common\MyException;
+use app\index\model\Course;
 
 class Plan extends Model {
 	
 	protected $pk = 'id';
+	protected $field = ['no','name','week','day','section','term','code'];
+	protected $d_rep = ['', '一', '二', '三', '四', '五', '六', '日'];
 	
 	protected function initialize() {
 		parent::initialize();
@@ -16,7 +19,22 @@ class Plan extends Model {
 	
 	public function getItem($term = null) {
 		if(isset($term)) {
-			return $this->where('term', $term)->select();
+			$list = $this->where('term', $term)->select();
+			$course = (new Course())->getCourseBaseInfo($term);
+			if(!empty($course)) {
+				foreach($list as $item) {
+					$no = $item['no'];
+					$item['c_name'] = $course[$no]['name'];
+					$item['c_col'] = $course[$no]['col'];
+					$item['c_teacher'] = $course[$no]['teach_name'];
+					$item['week'] = integerToInterval($item['week']);
+					$item['section'] = integerToInterval($item['section']);
+					$item['day'] = '周'.$this->d_rep[$item['day']];
+				}
+				return $list;
+			} else {
+				throw new MyException('学期或课程信息错误！',-1);
+			}
 		}
 		return null;
 	}
@@ -25,6 +43,17 @@ class Plan extends Model {
 		try {
 			$this->where('id',$id)
 			->delete();
+		} catch (Exception $e) {
+			throw $e;
+		}
+	}
+	
+	public static function deleteItemByCourse($term, $course) {
+		try {
+			db('plan')->where([
+					'term' => $term,
+					'no' => $course,
+			])->delete();
 		} catch (Exception $e) {
 			throw $e;
 		}
@@ -39,35 +68,36 @@ class Plan extends Model {
 	}
 	
 	public function importItems($list, $term) {
-// 		try {
-// 			$types = new TypeList();
-// 			$t_lst = $types->getItemList();
-// 			$t_rep = [];
-// 			foreach($t_lst as $t_row) {
-// 				$t_rep[$t_row['name']] = $t_row['id'];
-// 			}
-// 			$datAll = [];
-// 			foreach($list as $row) {
-// 				if(count($row) != count($this->field) - 2) {
-// 					throw new MyException('导入的文件好像有问题…', -1);
-// 				}
-// 				$dat = [];
-// 				foreach($row as $k=>$cell) {
-// 					if($k == 5) {
-// 						$dat[$this->field[$k]] = $t_rep[$cell];
-// 					} else {
-// 						$dat[$this->field[$k]] = $cell;
-// 					}
-// 					if($k == 10) {
-// 						$dat[$this->field[$k+1]] = $term;
-// 						$dat[$this->field[$k+2]] = $term.$row[0];
-// 					}
-// 				}
-// 				array_push($datAll, $dat);
-// 			}
-// 			return $this->saveAll($datAll);
-// 		} catch (\think\Exception $e) {
-// 			throw $e;
-// 		}
+		try {
+			$datAll = [];
+			$course = (new Course())->getCourseBaseInfo($term);
+			foreach($list as $row) {
+				if(count($row) != count($this->field) - 2) {
+					throw new MyException('导入的文件好像有问题…', -1);
+				}
+				if(empty($course[$row[0]])) {
+					throw new MyException('表中某些课程在本学期课程中不存在！', -2);
+				}
+				$dat = [];
+				foreach($row as $k=>$cell) {
+					if($k == 1) {
+						continue;
+					}
+					if($k == 2 || $k == 4) {
+						$dat[$this->field[$k]] = intervalToInteger($cell);
+						if($k == 4) {
+							$dat[$this->field[$k+1]] = $term;
+							$dat[$this->field[$k+2]] = $term.$row[0].'-'.$dat['week'].'-'.$dat['day'].'-'.$dat['section'];
+						}
+						continue;
+					}
+					$dat[$this->field[$k]] = $cell;
+				}
+				array_push($datAll, $dat);
+			}
+			return $this->saveAll($datAll);
+		} catch (\think\Exception $e) {
+			throw $e;
+		}
 	}
 }

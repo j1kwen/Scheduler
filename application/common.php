@@ -162,3 +162,64 @@ function timestamp() {
 	$msectime = (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
 	return $msectime;
 }
+/**
+ * 将整数与-,分隔符表示的区间转换成二进制位标记的十进制形式，如1-2,4-6表示成二进制1110110，十进制118
+ * @param string $str 要转换的字符串，只包含整数、分隔符','，区间符'-'
+ * @return int 返回十进制整数
+ */
+function intervalToInteger($str) {
+	$arr = explode(',', $str);
+	$ret = 0;
+	foreach ($arr as $item) {
+		$bet = explode('-', $item);
+		if(count($bet) == 1) {
+			$ret = $ret | (1 << intval($bet[0]));
+		} else {
+			$n = intval($bet[1]);
+			for($i = intval($bet[0]); $i <= $n; $i++) {
+				$ret = $ret | (1 << $i);
+			}
+		}
+	}
+	return $ret;
+}
+/**
+ * 将整数转换成区间表示，整数二进制位1代表可用区间
+ * @param int $num
+ * @return string 转换后的字符串
+ */
+function integerToInterval($num) {
+	$x = 0;
+	$ret = [];
+	$lft = -1;
+	while($num > 0) {
+		$tp = $num & 1;
+		if($tp == 1 && $lft == -1) {
+			$lft = $x;
+		} else if($tp == 0 && $lft != -1) {
+			if($x -1 == $lft) {
+				array_push($ret, (string)$lft);
+			} else {					
+				array_push($ret, $lft.'-'.($x - 1));
+			}
+			$lft = -1;
+		}
+		$x++;
+		$num = $num >> 1;
+	}
+	if($lft != -1) {
+		if($x -1 == $lft) {
+			array_push($ret, (string)$lft);
+		} else {					
+			array_push($ret, $lft.'-'.($x - 1));
+		}
+	}
+	$str = '';
+	foreach ($ret as $it) {
+		if($str != '') {
+			$str .= ',';
+		}
+		$str .= $it;
+	}
+	return $str;
+}

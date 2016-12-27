@@ -5,6 +5,9 @@ namespace app\index\controller;
 use app\index\model\Term;
 use think\View;
 use think\Request;
+use think\Session;
+use app\common\MyException;
+use think\Exception;
 
 class Plan extends BaseController {
 	
@@ -66,7 +69,11 @@ class Plan extends BaseController {
 			if(isset($term) && !empty($course)) {
 				// get list item
 				$plan = model('plan');
-				$list = $plan->getItem($term['code']);
+				try {					
+					$list = $plan->getItem($term['code']);
+				} catch (MyException $e) {
+					return $this->fetch('public/error');
+				}
 			}
 			$this->assign([
 					'term' => $term,
@@ -102,10 +109,103 @@ class Plan extends BaseController {
 			return json([
 					'success' => true,
 					'msg' => 'success',
-					'content' => $this->fetch('course/preview'),
+					'content' => $this->fetch('plan/preview'),
 					'key' => $key,
-					'url' => url('index/course/save'),
+					'url' => url('index/plan/save'),
 			]);
+		} else {
+			$this->error();
+		}
+	}
+	
+	public function save() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$tsp = $request->param('key');
+			$has_title = $request->param('titled', false);
+			$ids = $request->param('except');
+			if(Session::has($tsp)) {
+				$data = Session($tsp);
+				$list = $data['data'];
+				$term = $data['term'];
+				if($has_title == 'true') {
+					unset($list[0]);
+				}
+				if(!empty($ids)) {
+					$list_id = explode(',',$ids);
+					foreach($list_id as $i) {
+						if(isset($list[$i])) {
+							unset($list[$i]);
+						}
+					}
+				}
+				try {
+					$cor = model('plan');
+					$cor->importItems($list, $term['code']);
+					return json([
+							'success' => true,
+							'msg' => '数据导入成功！',
+					]);
+				} catch (MyException $em) {
+					return getAjaxResp($em->getData('msg'));
+				} catch(Exception $e) {
+					if(isset($e->getData()["PDO Error Info"])) {						
+						$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
+						if($e_msg == "1062") {
+							return getAjaxResp("本学期好像已经安排了同一课程的同一上课时间，请检查后重试！");
+						} else {
+							return getAjaxResp("未知错误，请稍候重试！");
+						}
+					} else {
+						return getAjaxResp("未知错误，请稍候重试！");
+					}
+				}
+			}
+			return getAjaxResp('数据导入失败！请重试！');
+		} else {
+			$this->error();
+		}
+	}
+	
+	public function del() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$_id = $request->param('id');
+			if(!empty($_id)) {
+				try {
+					$cor = model('plan');
+					$cor->deleteItem($_id);
+					// TODO: del
+	
+					return getAjaxResp("success",true);
+				} catch (Exception $e) {
+					return getAjaxResp("服务器异常，请稍候重试！");
+				}
+			} else {
+				return getAjaxResp();
+			}
+		} else {
+			$this->error();
+		}
+	}
+	
+	public function muldel() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$_id = $request->param('id');
+			if(!empty($_id)) {
+				try {
+					$cor = model('plan');
+					$cor->deleteMultiItems($_id);
+					// TODO: del
+	
+					return getAjaxResp("success",true);
+				} catch (Exception $e) {
+					return getAjaxResp("服务器异常，请稍候重试！");
+				}
+			} else {
+				return getAjaxResp();
+			}
 		} else {
 			$this->error();
 		}

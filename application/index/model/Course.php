@@ -21,18 +21,46 @@ class Course extends Model {
 		return null;
 	}
 	
+	public function getCourseBaseInfo($term) {
+		if(isset($term)) {
+			$list = $this->getItem($term);
+			$ret = [];
+			foreach ($list as $item) {
+				$ret[$item['no']] = [
+						'name' => $item['name'],
+						'col' => $item['col'],
+						'teach_name' => $item['teach_name'],
+				];
+			}
+			return $ret;
+		}
+		return null;
+	}
+	
 	public function deleteItem($id) {
-		try {			
+		try {
+			$cor = $this->where('id', $id)->find();
+			$term = $cor['term'];
+			$no = $cor['no'];
 			$this->where('id',$id)
 			->delete();
+			Plan::deleteItemByCourse($term, $no);
+			
 		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	
 	public function deleteMultiItems($ids) {
-		try {			
-			$this->destroy($ids);
+		try {
+			$arr = explode(',', $ids);
+			foreach ($arr as $id) {
+				$cor = $this->where('id', $id)->find();
+				$term = $cor['term'];
+				$no = $cor['no'];
+				Plan::deleteItemByCourse($term, $no);
+				$this->where('id', $id)->delete();
+			}
 		} catch (Exception $e) {
 			throw $e;
 		}

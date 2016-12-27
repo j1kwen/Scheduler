@@ -158,10 +158,30 @@ $(document).ready(function() {
 										return ;
 									}
 									var titled = dom.checked;
+									var queue = new Array();
+									var _cnt = 0;
+									$("table.table-preview>tbody>tr>td>input[type='checkbox']").each(function() {
+										if($(this).get(0).checked == false) {
+											queue.push(this);
+										} else {
+											_cnt++;
+										}
+									});
+									if(_cnt == 0) {
+										showErrorAlert('未选择条目', '未选中表中任何条目…');
+										return false;
+									}
+									var ids = '';
+									for(i in queue) {
+										if(i != 0) {
+											ids += ","
+										}
+										ids += $(queue[i]).parent().parent().attr('data-id');
+									}
 									$.ajax({ 
 										url : data.url, 
 										type : 'POST', 
-										data : "key=" + data.key + "&titled=" + titled,
+										data : "key=" + data.key + "&titled=" + titled + "&except=" + ids,
 										success : function(s_data) {
 											if(s_data.success) {
 												$.confirm({

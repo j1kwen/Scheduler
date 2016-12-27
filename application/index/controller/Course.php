@@ -79,8 +79,6 @@ class Course extends BaseController {
 				try {
 					$cor = model('course');
 					$cor->deleteItem($_id);
-					// TODO: del
-						
 					return getAjaxResp("success",true);
 				} catch (Exception $e) {
 					return getAjaxResp("服务器异常，请稍候重试！");
@@ -152,6 +150,7 @@ class Course extends BaseController {
 		if($request->isAjax()) {
 			$tsp = $request->param('key');
 			$has_title = $request->param('titled', false);
+			$ids = $request->param('except');
 			if(Session::has($tsp)) {
 				$data = Session($tsp);
 				$list = $data['data'];
@@ -159,14 +158,20 @@ class Course extends BaseController {
 				if($has_title == 'true') {
 					unset($list[0]);
 				}
+				if(!empty($ids)) {
+					$list_id = explode(',',$ids);
+					foreach($list_id as $i) {
+						if(isset($list[$i])) {
+							unset($list[$i]);
+						}
+					}
+				}
 				try {		
 					$cor = model('course');
-					$res = $cor->importItems($list, $term['code']);
+					$cor->importItems($list, $term['code']);
 					return json([
 						'success' => true,
 						'msg' => '数据导入成功！',
-						'res' => $res,
-						'term' => $term['code'],
 					]);
 				} catch (MyException $em) {					
 					return getAjaxResp($em->getData('msg'));

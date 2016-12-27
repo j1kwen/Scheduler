@@ -33,7 +33,7 @@ $(document).ready(function() {
 			type: 'red',
 			icon: 'glyphicon glyphicon-trash',
 			title: '删除课程',
-			content: '<h4>确实要删除该课程吗？</h4><p><strong><del>' + _name + ' （' + _mac + '） ' + _type + '</del></strong></p><p>删除后，请重新安排课表！</p>',
+			content: '<h4>确实要删除该课程吗？</h4><p><strong><del>' + _name + ' （' + _mac + '） ' + _type + '</del></strong></p><p>本学期该课程对应的课程安排也将删除！</p><p>删除后，请重新安排课表！</p>',
 			buttons: {
 				取消: {
 					btnClass: "btn btn-default",

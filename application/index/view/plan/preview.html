@@ -20,23 +20,19 @@
   </div>
 		<table class="table table-preview table-bordered text-center table-responsive table-hover">
 			<thead>
-				<tr class="bg-primary">			
-					<th>编号</th>
-					<th>学生所在院系</th>
-					<th>专业（全称）</th>
-					<th>年级-班级</th>
-					<th>课程名（全称）</th>
-					<th>课程类型</th>
-					<th>总人数</th>
-					<th>实验学时</th>
-					<th>教师院系</th>
-					<th>教师姓名</th>
-					<th>联系电话</th>
+				<tr class="bg-primary">
+					<th><input type="checkbox" checked="checked" class="select-all" title="全选"/></th>
+					<th>课程编号</th>
+					<th>课程名</th>
+					<th>上课周次</th>
+					<th>时间（周几）</th>
+					<th>节次</th>
 				</tr>
 			</thead>
 			<tbody>
 {foreach name="list" item="item" key="idx"}
-				<tr>
+				<tr data-id="{$idx}">
+				<td><input type="checkbox" checked="checked"/></td>
 {foreach $item as $cell}
 					<td>{$cell}</td>
 {/foreach}
@@ -48,6 +44,7 @@
 $(document).ready(function() {
 	if($("#checkHasTitlePreview").get(0).checked) {
 		if($("table.table-preview>tbody>tr").size() > 0) {
+			$("table.table-preview>tbody>tr:first>td:first>input[type='checkbox']").get(0).checked = false;
 			$("table.table-preview>tbody>tr:first").toggleClass('delete-line bg-warning').appendTo($("table.table-preview>thead"));
 		}
 	}
@@ -56,11 +53,14 @@ $(document).ready(function() {
 			return true;
 		}
 		if($(this).get(0).checked) {
+			$("table.table-preview>tbody>tr:first>td:first>input[type='checkbox']").get(0).checked = false;
 			$("table.table-preview>tbody>tr:first").toggleClass('delete-line bg-warning').appendTo($("table.table-preview>thead"));
 		} else {
+			$("table.table-preview>thead>tr:last>td:first>input[type='checkbox']").get(0).checked = true;
 			$("table.table-preview>thead>tr:last").toggleClass('delete-line bg-warning').prependTo($("table.table-preview>tbody"));
 		}
 	});
 });
 </script>
+<script type="text/javascript" src="__STATIC__/js/table-select.js"></script>
 {/if}

@@ -19,7 +19,7 @@
 					<th>学院</th>
 					<th>任课老师</th>
 					<th>上课周次</th>
-					<th>时间（周几）</th>
+					<th>时间</th>
 					<th>节次</th>
 					<th>操作</th>
 				</tr>
@@ -31,7 +31,7 @@
 				<tr data-id="{$item.id}">
 					<td><input type="checkbox"/></td>
 					<td>{$item.no}</td>
-					<td>{$item.c_mame}</td>
+					<td>{$item.c_name}</td>
 					<td>{$item.c_col}</td>
 					<td>{$item.c_teacher}</td>
 					<td>{$item.week}</td>
@@ -47,8 +47,8 @@
 		</table>
 {/if}
 <script>
-	var mod_course = "{:url('index/plan/modify')}";
-	var del_course = "{:url('index/plan/del')}";
+	var mod_plan = "{:url('index/plan/modify')}";
+	var del_plan = "{:url('index/plan/del')}";
 </script>
 <script type="text/javascript" src="__STATIC__/js/plan.js"></script>
 <script type="text/javascript" src="__STATIC__/js/table-select.js"></script>

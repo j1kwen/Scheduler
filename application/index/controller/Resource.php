@@ -16,7 +16,8 @@ class Resource extends BaseController {
 	}
 	
 	public function debug() {
-
+		return integerToInterval(125388);
+		return intervalToInteger('10');
 		return $this->fetch('public/debug',[
 				'title' => 'Debug it',
 		]);

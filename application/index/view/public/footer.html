@@ -15,3 +15,14 @@
 <script type="text/javascript" src="__STATIC__/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript" src="__STATIC__/js/jquery-confirm.min.js"></script>
 <script src="__STATIC__/js/main.js"></script>
+<script>
+$(document).ready(function() {
+	$.ajax({
+		url: "{:url('index/index/topweek')}",
+		type: "GET",
+		success: function(data) {
+			$("#top-week").html(data);
+		},
+	});
+});
+</script>

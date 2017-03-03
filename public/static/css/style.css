@@ -43,7 +43,7 @@ body.login-body {
 .panel-table {
 	margin-bottom: 25px;
 }
-.jumbotron .label {
+.jumbotron .label, ul .label {
 	font-size: 100%;
 }
 td>.label {

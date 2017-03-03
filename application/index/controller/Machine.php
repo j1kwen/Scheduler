@@ -52,10 +52,11 @@ class Machine extends BaseController {
 			$add_no = $request->param('no');
 			$add_mac = $request->param('mac');
 			$add_type = $request->param('type');
-			if(!empty($add_name) && !empty($add_no) && !empty($add_mac) && !empty($add_type)) {
+			$add_gp = $request->param('gp');
+			if(!empty($add_name) && !empty($add_no) && !empty($add_mac) && !empty($add_type) && !empty($add_gp)) {
 				try {
 					$mach = model('machine');
-					$mach->addItem($add_name, $add_no, $add_mac, $add_type);
+					$mach->addItem($add_name, $add_no, $add_mac, $add_type, $add_gp);
 					return getAjaxResp("success", true);
 				} catch (Exception $e) {
 					$e_msg = $e->getData()["PDO Error Info"]["Driver Error Code"];
@@ -123,10 +124,11 @@ class Machine extends BaseController {
 			$_id = $request->param('id');
 			$_mac = $request->param('mac');
 			$_type = $request->param('type');
-			if(!empty($_id) && !empty($_mac) && !empty($_type)) {
+			$_gp = $request->param('gp');
+			if(!empty($_id) && !empty($_mac) && !empty($_type) && !empty($_gp)) {
 				try {
 					$mach = model('machine');
-					$mach->updateItem($_id, $_mac, $_type);
+					$mach->updateItem($_id, $_mac, $_type, $_gp);
 					return getAjaxResp("success",true);
 				} catch (Exception $e) {
 					return getAjaxResp("服务器异常，请稍候重试！");

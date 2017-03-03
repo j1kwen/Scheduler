@@ -1,0 +1,58 @@
+
+<div class="panel panel-default">
+<div class="panel-body">
+<div class="alert alert-info" role="alert">即将进行本学期排课工作，排课执行过程中请<strong>不要做任何操作</strong>，以免发生错误。</div>
+<div class="progress" id="bar-proc" style="display: none;">
+  <div id="bar-proc-body" class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span>正在执行……</span>
+  </div>
+</div>
+<center>
+	<button type="button" class="btn btn-primary" id="btn-working">开始排课</button>
+</center>
+</div>
+</div>
+<script>
+function showErrorAlert(title, content) {
+	$.alert({
+		keyboardEnabled: true,
+		backgroundDismiss: true,
+		icon: 'glyphicon glyphicon-remove-circle',
+		title: title,
+		content: content,
+		type: 'red',
+		buttons: {
+			确定: {
+				btnClass: 'btn btn-danger',
+			},
+		},
+	});
+}
+$("#btn-working").click(function() {
+	
+	$.ajax({
+		url: "{:url('index/table/background')}",
+		type: "POST",
+		data: "key={$res_key}",
+		success: function(data) {
+			if(data.success) {
+				$("#bar-proc-body").removeClass('progress-bar-info');
+				$("#bar-proc-body").removeClass('active');
+				$("#bar-proc-body").addClass('progress-bar-success');
+				$("#bar-proc-body").find("span").text("任务完成，请关闭后刷新页面");
+				$(".btn-cfm-close").text('完成');
+				$(".btn-cfm-close").removeClass("btn-default").addClass("btn-primary");
+			} else {
+				showErrorAlert('错误', data.msg);
+			}
+		},
+		error: function() {
+			showErrorAlert('错误', '请求失败，请重试！');
+		}
+	});
+	
+	
+	$(this).hide();
+	$("#bar-proc").show();
+});
+</script>

@@ -42,7 +42,7 @@ class Plan extends BaseController {
 			$alert_string = (new View())->assign([
 					'type' => 'success',
 					'close' => false,
-					'title' => '所有条件已就绪！',
+					'title' => '本学期课程已导入！',
 					'body' => '现在是<strong>'.$term['year'].'-'.($term['year']+1).'</strong>学年 第<strong>'.$term['term'].'</strong>学期，已导入课程',
 					'href' => url('index/course/index'),
 					'href_text' => '查看课程',

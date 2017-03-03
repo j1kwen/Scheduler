@@ -36,9 +36,12 @@ class Term extends Model {
 	}
 	
 	public function deleteItem($id) {
-		try {			
+		try {
+			$itm = $this->where('id', $id)->find();
+			$term = $itm['code'];
 			$this->where('id',$id)
 				->delete();
+			Course::deleteItemByTerm($term);
 		} catch (\think\Exception $e) {
 			throw $e;
 		}
@@ -72,6 +75,34 @@ class Term extends Model {
 	
 	public function getCurrentTerm() {
 		return $this->where('is_cur', 1)->find();
+	}
+	
+	private function diffBetweenTwoDays ($day1, $day2)
+	{
+	  $second1 = strtotime($day1);
+	  $second2 = strtotime($day2);
+	  return floor(($second2 - $second1) / 86400);
+	}
+	
+	public function getCurrentDays() {
+		$cor = $this->where('is_cur', 1)->find();
+		if(empty($cor)) {
+			return -1;
+		}
+		$day1 = $cor['start'];
+		$day2 = date('Y-m-d',time());
+		return $this->diffBetweenTwoDays($day1, $day2) + 1;
+	}
+	
+	public static function getDifferFromTerm($day2) {
+		$cor = Term::getCurTerm();
+		if(empty($cor)) {
+			return -1;
+		}
+		$day1 = $cor['start'];
+		$second1 = strtotime($day1);
+		$second2 = strtotime($day2);
+		return floor(($second2 - $second1) / 86400) + 1;
 	}
 	
 	public static function getCurTerm() {

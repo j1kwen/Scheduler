@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+{include file="public:header" /}
+</head>
+<body>
+{include file="public:topbar" /}
+<div class="container">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4>不开放时间&nbsp;<small>Rest</small></h4>
+		</div>		
+		<div class="panel-body">
+			<button type="button" title="添加新时段" class="btn btn-info" data-toggle="modal" data-target="#addModal">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+			&nbsp;
+			<button type="button" class="btn btn-default btn-refresh" title="刷新">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</button>
+		</div>
+		<div data-area="type" class="panel-table">
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="addModalLabel"><span class="glyphicon glyphicon-tag"></span>&nbsp;添加新时段</h4>
+	      </div>
+	      <form role="form" class="form-horizontal" action="{:url('index/rest/add')}" method="POST">
+	      <div class="modal-body">
+	      	<div class="alert alert-warning" role="alert"><strong>注意！</strong>为保证课表数据完整，不开放时间添加后<strong>不可更改或删除</strong>！</div>
+			  <div class="form-group has-feedback">
+               <label for="inputDate1" class="col-sm-2 control-label">起始日期</label>
+               <div class="col-sm-9">
+	               <div class="input-group date form_date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+	                   <input class="form-control" name="date1" size="16" type="text" value="" id="inputDate1" readonly>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	               </div>
+               </div>
+          	  </div>
+          	  <div class="form-group has-feedback">
+               <label for="inputDate2" class="col-sm-2 control-label">终止日期</label>
+               <div class="col-sm-9">
+	               <div class="input-group date form_date " data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+	                   <input class="form-control" name="date2" size="16" type="text" value="" id="inputDate2" readonly>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	               </div>
+               </div>
+          	  </div>
+			  <div class="form-group">
+			    <label for="inputDes" class="col-sm-2 control-label">备注</label>
+			    <div class="col-sm-9">
+			    	<input type="text" class="form-control" name="description" id="inputDes" placeholder="为该时段添加备注">
+			  	</div>
+			  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary btn-form-submit">保存</button>
+	      </div>
+		</form>
+	    </div>
+	  </div>
+	</div>
+</div>
+<script>
+	var get_item = "{:url('index/rest/item')}";
+</script>
+{include file="public:footer" /}
+</body>
+</html>

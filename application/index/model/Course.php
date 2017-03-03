@@ -21,6 +21,10 @@ class Course extends Model {
 		return null;
 	}
 	
+	public function getDetails($code) {
+		return $this->where('code', $code)->find();
+	}
+	
 	public function getCourseBaseInfo($term) {
 		if(isset($term)) {
 			$list = $this->getItem($term);
@@ -46,6 +50,17 @@ class Course extends Model {
 			->delete();
 			Plan::deleteItemByCourse($term, $no);
 			
+		} catch (Exception $e) {
+			throw $e;
+		}
+	}
+	
+	public static function deleteItemByTerm($term) {
+		try {
+			db('course')->where([
+					'term' => $term,
+			])->delete();
+			Plan::deleteItemByTerm($term);
 		} catch (Exception $e) {
 			throw $e;
 		}

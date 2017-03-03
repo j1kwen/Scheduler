@@ -5,6 +5,6 @@
 	<strong>{$title|default=''}</strong>
 	{$body|default=''}
 {if condition=:isset($href)}
-	<a href="{$href}" class="alert-link">{$href_text|default='Link'}</a>
+	<a href="{$href}" class="alert-link {$ext_cls|default=''}">{$href_text|default='Link'}</a>
 {/if}
 </div>

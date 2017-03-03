@@ -247,7 +247,7 @@ return [
 	],
 		
 	'captcha'					=> [
-	// 验证码字符集合
+			// 验证码字符集合
 			'codeSet' => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY',
 			// 验证码字体大小(px)
 			'fontSize' => 25,
@@ -274,5 +274,19 @@ return [
 			'library' => 'PHPExcel.PHPExcel',
 			'type' => 'Excel2007',
 			'sheet' => 'Sheet1',
+	],
+		
+	//Rule 排课规则设置
+	'rule' => [
+			//公共课
+			'1' => '1,2',
+			//专业基础课
+			'2' => '2,1',
+			//专业课
+			'3' => '3',
+			//数媒专业课
+			'4' => '4',
+			//软件专业课
+			'5' => '5',
 	],
 ];

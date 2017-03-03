@@ -34,4 +34,22 @@ class Index extends BaseController
     	]);
     	return $this->fetch();
     }
+    
+    public function topweek() {
+    	$term = model('term');
+    	$item = $term->where('is_cur',1)->find();
+    	if(isset($item)) {
+    		$d_term = date_create($item->start);
+    		$d_now = date_create();
+    		if(date_timestamp_get($d_now) >= date_timestamp_get($d_term)) {
+    			$differ = floor(date_diff($d_term, $d_now)->format('%a') / 7) + 1;
+    		}
+    	}
+    	$this->assign([
+    			'item' => $item,
+    			'_day' => date('w', time()),
+    			'_week' => isset($differ)?$differ:null,
+    	]);
+    	return $this->fetch();
+    }
 }

@@ -22,6 +22,7 @@ $(".btn-mod-machine").click(function() {
 	var _name = $(_tr[1]).find("span").text();
 	var _mac = $(_tr[3]).text();
 	var _type = $(_tr[4]).text();
+	var _gp = $(_tr[5]).text();
 	var item = $(this).parent().parent();
 	var _id = $(item).attr('data-id').trim();
 	var _tp_lst = new String();
@@ -37,7 +38,7 @@ $(".btn-mod-machine").click(function() {
 		type: 'orange',
 		icon: 'glyphicon glyphicon-pencil',
 		title: '修改机房信息',
-		content: '<h4>机房号：' + _name + '</h4><div class="input-group"><span class="input-group-addon">机器数量</span><input type="number" id="m-mac" class="form-control" placeholder="请输入机器数量" value="' + _mac + '"></div><br/><div class="input-group"><span class="input-group-addon">课程类型</span><select class="form-control" id="m-type">' + _tp_lst + '</select></div>',
+		content: '<h4>机房号：' + _name + '</h4><div class="input-group"><span class="input-group-addon">机器数量</span><input type="number" id="m-mac" class="form-control" placeholder="请输入机器数量" value="' + _mac + '"></div><br/><div class="input-group"><span class="input-group-addon">课程类型</span><select class="form-control" id="m-type">' + _tp_lst + '</select></div><br /><div class="input-group"><span class="input-group-addon">所属机组</span><input type="number" id="m-gp" class="form-control" placeholder="请输入组编号" value="' + _gp + '"></div>',
 		buttons: {
 			取消: {
 				btnClass: "btn btn-default",
@@ -47,6 +48,7 @@ $(".btn-mod-machine").click(function() {
 				action: function() {
 					var m_mac = $("#m-mac").val().trim();
 					var m_type = $("#m-type").val().trim();
+					var m_gp = $("#m-gp").val().trim();
 					var m_tp_name = "";
 					for(_t in type_list) {
 						var _i = type_list[_t];
@@ -55,17 +57,18 @@ $(".btn-mod-machine").click(function() {
 							break;
 						}
 					}
-					if(m_mac == _mac && m_tp_name == _type) {
+					if(m_mac == _mac && m_tp_name == _type && m_gp == _gp) {
 						return true;
 					}
 					$.ajax({
 						url: mod_machine,
 						type: "POST",
-						data: "id=" + _id + "&mac=" + m_mac + "&type=" + m_type,
+						data: "id=" + _id + "&mac=" + m_mac + "&type=" + m_type + "&gp=" + m_gp,
 						success: function(data) {
 							if(data.success) {
 								$(_tr[3]).text(m_mac);
 								$(_tr[4]).text(m_tp_name);
+								$(_tr[5]).text(m_gp);
 							} else {
 								showErrorAlert('错误', data.msg);
 							}

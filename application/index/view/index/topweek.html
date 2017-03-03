@@ -1,0 +1,7 @@
+{if condition=:isset($item)}
+{if condition=:isset($_week)}
+				<span class="label label-success">第{$_week}周</span>
+{else /}
+				<span class="label label-danger">未开学</span>
+{/if}
+{/if}

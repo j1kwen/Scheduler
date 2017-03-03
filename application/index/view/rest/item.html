@@ -1,0 +1,84 @@
+		<!-- Table -->
+{if condition="empty($list)"}
+{include file="public/list_empty"}
+{else /}
+		<table class="table table-bordered text-center table-responsive table-hover">
+			<thead>
+				<tr>
+					<th>编号</th>
+					<th>起始日期</th>
+					<th>终止日期</th>
+					<th>备注</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+{foreach $list as $item}
+				<tr data-id="{$item.id}">
+					<td>{$item.id}</td>
+					<td>{$item.start}</td>
+					<td>{$item.end}</td>
+					<td>{$item.remark}</td>
+					<td>
+{if condition="$item.apply eq 0"}
+						<button type="button" class="btn btn-sm btn-success btn-apply-time" title="应用到课表"><span class="glyphicon glyphicon-wrench"></span></button>
+{else /}
+						<button type="button" class="btn btn-sm btn-success disabled" title="已应用"><span class="glyphicon glyphicon-wrench"></span></button>
+{/if}
+					</td>
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+{/if}
+<script>
+$(document).ready(function() {
+	function showErrorAlert(title, content) {
+		$.alert({
+			keyboardEnabled: true,
+			backgroundDismiss: true,
+			icon: 'glyphicon glyphicon-remove-circle',
+			title: title,
+			content: content,
+			type: 'red',
+			buttons: {
+				确定: {
+					btnClass: 'btn btn-danger',
+				},
+			},
+		});
+	}
+	$(".btn-apply-time").click(function() {
+		var _id = $(this).parent().parent().attr('data-id');
+		var _url = "{:url('index/rest/apply')}";
+		$.ajax({
+			url: _url,
+			type: "POST",
+			data: "id=" + _id,
+			success: function(data) {
+				if(data.success) {
+					$.alert({
+						keyboardEnabled: true,
+						backgroundDismiss: true,
+						icon: 'glyphicon glyphicon-ok',
+						title: '成功',
+						content: data.msg,
+						type: 'green',
+						buttons: {
+							确定: {
+								btnClass: 'btn btn-success',
+							},
+						},
+					});
+					$(".btn-refresh").click();
+				} else {
+					showErrorAlert('错误', data.msg);
+				}
+			},
+			error: function() {
+				showErrorAlert('错误', '请求失败，请重试！');
+			}
+		});
+	});
+});
+</script>

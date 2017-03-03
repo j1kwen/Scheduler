@@ -1,0 +1,100 @@
+		<!-- Table -->
+{if condition="empty($term)"}
+		<div class="list-empty">
+			<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;当前未设置学期
+		</div>
+{elseif condition="empty($list)"/}
+{include file="public/list_empty" /}
+{else /}
+		<table class="table table-bordered text-center table-responsive table-hover">
+			<thead>
+				<tr>	
+					<th>课程号</th>
+					<th>原上课周</th>
+					<th>原上课日</th>
+					<th>原节次</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+{foreach $list as $item}
+				<tr data-id="{$item.id}">
+					<td>{$item.course}</td>
+					<td>{$item.week}</td>
+					<td>{$item.day}</td>
+					<td>{$item.section}</td>
+					<td>
+						<button type="button" class="btn btn-sm btn-success btn-del btn-do-mutex" title="安排"><span class="glyphicon glyphicon-pushpin"></span></button>
+					</td>
+				</tr>
+{/foreach}
+			</tbody>
+		</table>
+{/if}
+<script>
+$(document).ready(function(){
+	function showErrorAlert(title, content) {
+		$.alert({
+			keyboardEnabled: true,
+			backgroundDismiss: true,
+			icon: 'glyphicon glyphicon-remove-circle',
+			title: title,
+			content: content,
+			type: 'red',
+			buttons: {
+				确定: {
+					btnClass: 'btn btn-danger',
+				},
+			},
+		});
+	}
+	$(".btn-do-mutex").click(function() {
+		var _sf_id = $(this).parent().parent().attr("data-id");
+		$.alert({
+			keyboardEnabled: true,
+			backgroundDismiss: true,
+			icon: 'glyphicon glyphicon-share-alt',
+			title: '安排',
+			content: "url:{:url('index/table/move')}?id=" + _sf_id,
+			type: 'green',
+			columnClass: 'col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3',
+			buttons: {
+				执行: {
+					btnClass: 'btn btn-danger',
+					action: function() {
+						var _url_fm = $("#form-move").attr('data-action');
+						var _dat = $("#form-move").serialize();
+						$.ajax({
+							url: _url_fm,
+							type: "POST",
+							data: _dat,
+							success: function(data) {
+								if(data.success) {
+									$.alert({
+										keyboardEnabled: true,
+										backgroundDismiss: true,
+										icon: 'glyphicon glyphicon-ok',
+										title: '成功',
+										content: data.msg,
+										type: 'green',
+										buttons: {
+											确定: {
+												btnClass: 'btn btn-success',
+											},
+										},
+									});
+								} else {
+									showErrorAlert('错误', data.msg);
+								}
+							},
+							error: function() {
+								showErrorAlert('错误', '请求失败，请重试！');
+							}
+						});
+					},
+				},
+			},
+		});
+	});
+});
+</script>

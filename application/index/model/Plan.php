@@ -41,8 +41,11 @@ class Plan extends Model {
 	
 	public function deleteItem($id) {
 		try {
+			$cor = $this->where('id', $id)->find();
+			$codes = $cor['code'];
 			$this->where('id',$id)
 			->delete();
+			Table::deleteItemByPlan($codes);
 		} catch (Exception $e) {
 			throw $e;
 		}
@@ -54,6 +57,17 @@ class Plan extends Model {
 					'term' => $term,
 					'no' => $course,
 			])->delete();
+			Table::deleteItemByCourse($term, $course);
+		} catch (Exception $e) {
+			throw $e;
+		}
+	}
+	public static function deleteItemByTerm($term) {
+		try {
+			db('plan')->where([
+					'term' => $term,
+			])->delete();
+			Table::deleteItemByTerm($term);
 		} catch (Exception $e) {
 			throw $e;
 		}
@@ -61,7 +75,13 @@ class Plan extends Model {
 	
 	public function deleteMultiItems($ids) {
 		try {
-			$this->destroy($ids);
+			$arr = explode(',', $ids);
+			foreach ($arr as $id) {
+				$cor = $this->where('id', $id)->find();
+				$codes = $cor['code'];
+				Table::deleteItemByPlan($codes);
+				$this->where('id', $id)->delete();
+			}
 		} catch (Exception $e) {
 			throw $e;
 		}
@@ -95,6 +115,9 @@ class Plan extends Model {
 				}
 				array_push($datAll, $dat);
 			}
+			// init table
+			$table = new Table();
+			$table->initTable($term, $datAll);
 			return $this->saveAll($datAll);
 		} catch (\think\Exception $e) {
 			throw $e;

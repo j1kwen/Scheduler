@@ -189,4 +189,19 @@ class Course extends BaseController {
 			$this->error();
 		}
 	}
+	
+	public function details() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$code = $request->param('code');
+			$m_course = model('course');
+			$course = $m_course->getDetails($code);
+			$this->assign([
+					'course' => $course,
+			]);
+			return $this->fetch();
+		} else {
+			$this->error();
+		}
+	}
 }

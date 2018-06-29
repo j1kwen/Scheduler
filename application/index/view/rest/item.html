@@ -6,8 +6,8 @@
 			<thead>
 				<tr>
 					<th>编号</th>
-					<th>起始日期</th>
-					<th>终止日期</th>
+					<th>起始日期（节次）</th>
+					<th>终止日期（节次）</th>
 					<th>备注</th>
 					<th>操作</th>
 				</tr>
@@ -16,8 +16,8 @@
 {foreach $list as $item}
 				<tr data-id="{$item.id}">
 					<td>{$item.id}</td>
-					<td>{$item.start}</td>
-					<td>{$item.end}</td>
+					<td title="{$term, $item->start|getWeekDayByDate}">{$item.start} ({$item.s_sec})</td>
+					<td title="{$term, $item->end|getWeekDayByDate}">{$item.end} ({$item.e_sec})</td>
 					<td>{$item.remark}</td>
 					<td>
 {if condition="$item.apply eq 0"}

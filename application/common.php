@@ -223,3 +223,31 @@ function integerToInterval($num) {
 	}
 	return $str;
 }
+/**
+ * 根据日期获取周数和星期数
+ */
+function getWeekDayByDate($term, $date) {
+	$rep_week = ['日', '一', '二', '三', '四', '五', '六'];
+	$d_term = date_create($term['start']);
+	$d_now = date_create($date);
+	$_week = date('w', date_timestamp_get($d_now));
+	if(date_timestamp_get($d_now) >= date_timestamp_get($d_term)) {
+		$differ = floor(date_diff($d_term, $d_now)->format('%a') / 7) + 1;
+		return '第'.$differ.'周周'.$rep_week[$_week]; 
+	}
+	return '';
+}
+/**
+ * 根据周数获取日期
+ * @param unknown $term
+ * @param unknown $week
+ */
+function getDateByWeek($term, $week) {
+	$d_term = date_create($term['start']);
+	$day_num_s = ($week - 1) * 7;
+	date_add($d_term,date_interval_create_from_date_string($day_num_s." days"));
+	$date_s = date('Y.m.d', date_timestamp_get($d_term));
+	date_add($d_term,date_interval_create_from_date_string("6 days"));
+	$date_e = date('Y.m.d', date_timestamp_get($d_term));
+	return $date_s."-".$date_e;
+}

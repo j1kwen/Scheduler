@@ -3,7 +3,7 @@
 {include file="public:header" /}
 <body>
 {include file="public:topbar" /}
-<div class="container">
+<div class="container-fluid">
 {$alert|default=''}
 	<div class="panel panel-{$seted?(empty($week)?'warning':'info'):'danger'}">
 		<div class="panel-heading">
@@ -20,7 +20,7 @@
 		</div>		
 		<!-- Table -->
 		<div class="panel-body">
-			<button{$seted ?'':' disabled'} type="button" class="btn btn-success" title="导出本周课表到Excel文件" data-toggle="modal" data-target="#importModal">
+			<button{$seted ?'':' disabled'} type="button" class="btn btn-success btn-table-to-pdf" title="导出本周课表到pdf文档">
 				<span class="glyphicon glyphicon-export"></span>
 			</button>
 			&nbsp;
@@ -41,5 +41,12 @@
 	var base_url = "{:url('index/table/item')}";
 </script>
 <script type="text/javascript" src="__STATIC__/js/table.js"></script>
+<script>
+$(document).ready(function() {
+	$(".btn-table-to-pdf").click(function() {
+		window.open("{:url('index/login/pdf')}?week=" + week_idx);
+	});
+});
+</script>
 </body>
 </html>

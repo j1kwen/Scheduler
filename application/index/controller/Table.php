@@ -8,6 +8,7 @@ use think\Request;
 use function think\error;
 use app\index\model\Term;
 use app\index\model\Machine;
+use app\common\MyException;
 
 class Table extends BaseController {
 	
@@ -167,6 +168,7 @@ class Table extends BaseController {
 			$week = $request->param('week');
 			if(!empty($week)) {			
 				$table = model('table');
+				$rest = model('rest');
 				$term = Term::getCurTerm();
 				$list = null;
 				$weeks = ['周一','周二','周三','周四','周五','周六','周日',];
@@ -177,14 +179,17 @@ class Table extends BaseController {
 				}
 				$act_wk--;
 				$list = $table->getItem($term['code'], $week);
+				$rest_list = $rest->getItem($term['code']);
 				$this->assign([
 						'term' => $term,
 						'list' => $list,
 						'weeks' => $weeks,
 						'ids' => $ids,
 						'act_wk' => $act_wk,
+						'cur_week' => $week,
+						'rest_list' => $rest_list,
 				]);
-				return $this->fetch();
+				return $this->fetch('item2');
 			} else {
 				return getAjaxResp("param error");
 			}
@@ -211,6 +216,110 @@ class Table extends BaseController {
 						'item' => $item,
 						'places' => $places,
 						'week_rep' => ['','周一','周二','周三','周四','周五','周六','周日'],
+				]);
+				return $this->fetch('move2');
+			} else {
+				return getAjaxResp("param error");
+			}
+		} else {
+			$this->error();
+		}
+	}
+	
+	public function move2() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$_id = $request->param('id');
+			if(!empty($_id)) {
+				$table = model('table');
+				$machine = model('machine');
+				$m_course = model('course');
+				$term = Term::getCurTerm();
+				
+				$item = $table->getSingleItem($_id);
+				$course = $m_course->getDetails($item['term'].$item['course']);
+				
+				$places = [];
+				$arr = explode(',', $item['place']);
+				foreach ($arr as $it) {
+					array_push($places, $machine->getMachineName($it));
+				}
+				$differ = null;
+				$d_term = date_create($term['start']);
+				$d_now = date_create();
+				if(date_timestamp_get($d_now) >= date_timestamp_get($d_term)) {
+					$differ = floor(date_diff($d_term, $d_now)->format('%a') / 7) + 1;
+				}
+				$this->assign([
+						'term' => $term,
+						'_id' => $_id,
+						'item' => $item,
+						'course' => $course,
+						'places' => $places,
+						'week_rep' => ['','周一','周二','周三','周四','周五','周六','周日'],
+						'now_week' => $differ,
+				]);
+				return $this->fetch('move2');
+			} else {
+				return getAjaxResp("param error");
+			}
+		} else {
+			$this->error();
+		}
+	}
+	
+	public function selector() {
+		$request = Request::instance();
+		if($request->isAjax()) {
+			$week = $request->param('week');
+			$_id = $request->param('id');
+			if(!empty($week) && !empty($_id)) {
+				$table = model('table');
+				$machine = model('machine');
+	
+				$term = Term::getCurTerm();
+				$list = null;
+				$item = $table->getSingleItem($_id);
+				$places = [];
+				$arr = explode(',', $item['place']);
+				foreach ($arr as $it) {
+					array_push($places, $machine->getMachineName($it));
+				}
+				$mac_list = $machine->getItemList();
+				$mac_idx_arr = [];
+				foreach($mac_list as $mi) {
+					$mac_idx_arr[$mi['name']] = $mi;
+				}
+				$weeks = ['周一','周二','周三','周四','周五','周六','周日',];
+				$ids = ['wk1','wk2','wk3','wk4','wk5','wk6','wk7',];
+				$act_wk = date('w', time());
+				if($act_wk == 0) {
+					$act_wk = 7;
+				}
+				$act_wk--;
+				$list = $table->getItem($term['code'], $week);
+				
+				$differ = null;
+				$d_term = date_create($term['start']);
+				$d_now = date_create();
+				if(date_timestamp_get($d_now) >= date_timestamp_get($d_term)) {
+					$differ = floor(date_diff($d_term, $d_now)->format('%a') / 7) + 1;
+				}
+				
+				$this->assign([
+						'term' => $term,
+						'list' => $list,
+						'weeks' => $weeks,
+						'ids' => $ids,
+						'act_wk' => $act_wk,
+						'_id' => $_id,
+						'item' => $item,
+						'places' => $places,
+						'week_rep' => ['','周一','周二','周三','周四','周五','周六','周日'],
+						'cur_week' => $week,
+						'now_week' => $differ,
+						'now_day' => (date('w', time())+6)%7,
+						'mac_list' => $mac_idx_arr,
 				]);
 				return $this->fetch();
 			} else {

@@ -42,6 +42,7 @@ class Term extends Model {
 			$this->where('id',$id)
 				->delete();
 			Course::deleteItemByTerm($term);
+			Rest::deleteItemByTerm($term);
 		} catch (\think\Exception $e) {
 			throw $e;
 		}

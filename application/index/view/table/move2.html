@@ -1,0 +1,153 @@
+<style>
+.panel-body .cell-disabled {
+	background-color: #e6908d;
+	border-color: #333;
+}
+.panel-body .cell-ok {
+	background-color: #dff0d8;
+	border-color: #333;
+}
+.panel-body .cell-cur {
+	background-color: #f0ad4e;
+	border-color: #333;
+}
+.panel-body .cell-normal {
+	background-color: #fff;
+	border-color: #333;
+}
+.panel-body .cell-active {
+	background-color: #5cb85c;
+	border-color: #333;
+}
+</style>
+<div>
+  <h4>课程<strong>{$course.name}（{$item.course}）</strong>，上课人数{$course.c_stu}人，点击下表格子选择迁移位置（见图例，点击图例可定位）：</h4>
+  <div id="move-date-area" data-id style="display:none;"></div>
+  <div id="move-idx-area" data-id style="display:none;"></div>
+</div>
+<div class="panel panel-info">
+		<div class="panel-heading">
+<nav aria-label="...">
+  <ul class="pager" style="margin-top: 0px; margin-bottom: 0px;">
+    <li id="week-prev-selector" class="previous"><a href="javascript:void(0);"><span aria-hidden="true">&larr;</span> 上一周</a></li>
+		<span id="span-week-selector" class="label label-default" style="padding: .6em 1em;vertical-align: -webkit-baseline-middle;">
+			第{$item.week}周
+		</span>
+    <li id="week-next-selector" class="next"><a href="javascript:void(0);">下一周 <span aria-hidden="true">&rarr;</span></a></li>
+  </ul>
+</nav>
+		
+		</div>		
+		<!-- Table -->
+		<div class="panel-body">
+			<button type="button" class="btn btn-default" id="selector-btn-refresh" title="刷新">
+				<span class="glyphicon glyphicon-refresh"></span>
+			</button>
+			&nbsp;
+			<button type="button" class="btn btn-warning" id="selector-btn-reset" title="定位到原位置">
+				<span class="glyphicon glyphicon-map-marker"></span>
+			</button>
+			&nbsp;
+			<button type="button" class="btn btn-danger" id="selector-btn-empty" title="清空所选位置">
+				<span class="glyphicon glyphicon-trash"></span>
+			</button>
+			&nbsp;&nbsp;格子颜色说明：
+			<button class="btn cell-ok"></button>可选位置&nbsp;
+			<button class="btn cell-active"></button>已选位置&nbsp;
+			<button class="btn cell-disabled"></button>已安排&nbsp;
+			<button class="btn cell-cur"></button>当前位置&nbsp;
+			<button class="btn cell-normal"></button>不可用
+		</div>
+		<div data-area="table-selector" class="table-table-selector">
+
+		</div>
+<script>
+var get_item_selector = "{:url('index/table/selector')}?week={$item.week}&id={$item.id}";
+var base_url_selector = "{:url('index/table/selector')}";
+var week_idx_selector = {$item.week};
+$(document).ready(function() {
+	
+	function loadItemSelector() {
+		if(typeof get_item_selector =='undefined') {
+			return false;
+		}
+		$("div[data-area='table-selector']").html('<div class="loading-icon"></div>');
+		$.ajax({
+			url: get_item_selector,
+			success: function(data) {
+				if(data.code == 0) {
+					$("#selector-btn-refresh").removeClass("refreshing");
+					$("div[data-area='table-selector']").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;登录失效，请刷新页面</div>');
+				} else {					
+					$("#selector-btn-refresh").removeClass("refreshing");
+					$("div[data-area='table-selector']").html(data);
+				}
+			}, 
+			error: function() {
+				$("#selector-btn-refresh").removeClass("refreshing");
+				$("div[data-area='table-selector']").html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;发生错误</div>');
+			}
+		});
+	}
+	loadItemSelector();
+	
+	$("#selector-btn-refresh").click(function() {
+		$(this).find("span.glyphicon").addClass("refreshing");
+		loadItemSelector();
+	});
+	
+	$("#selector-btn-reset, .panel-body .cell-cur").click(function() {
+		week_idx_selector = {$item.week};
+		get_item_selector = base_url_selector + "?week=" + week_idx_selector + "&id={$item.id}";
+		$("#selector-btn-refresh").click();
+		$("#span-week-selector").text("第" + week_idx_selector + "周");
+	});
+	
+	$(".panel-body .cell-ok").click(function(){
+		week_idx_selector = {$now_week|default=1};
+		get_item_selector = base_url_selector + "?week=" + week_idx_selector + "&id={$item.id}";
+		$("#selector-btn-refresh").click();
+		$("#span-week-selector").text("第" + week_idx_selector + "周");
+	});
+	
+	$(".panel-body .cell-active").click(function() {
+		if($("#move-date-area").attr("data-id")=="") {
+			return;
+		}
+		var sps = $("#move-date-area").attr("data-id").split("-");
+		week_idx_selector = sps[0];
+		get_item_selector = base_url_selector + "?week=" + week_idx_selector + "&id={$item.id}";
+		$("#selector-btn-refresh").click();
+		$("#span-week-selector").text("第" + week_idx_selector + "周");
+	});
+	
+	$("#selector-btn-empty").click(function() {
+		$('[data-area="table-selector"]').find(".cell-active").click();
+		$("#move-date-area").html('');
+		$("#move-date-area").attr("data-id","");
+		$("#move-idx-area").html("");
+	});
+	
+	$("#week-prev-selector").click(function() {
+		if(week_idx_selector > 1) {
+			week_idx_selector--;
+		} else {
+			week_idx_selector = 1;
+		}
+		get_item_selector = base_url_selector + "?week=" + week_idx_selector + "&id={$item.id}";
+		$("#selector-btn-refresh").click();
+		$("#span-week-selector").text("第" + week_idx_selector + "周");
+	});
+	
+	$("#week-next-selector").click(function() {
+		if(week_idx_selector < 30) {
+			week_idx_selector++;
+		} else {
+			week_idx_selector = 30;
+		}
+		get_item_selector = base_url_selector + "?week=" + week_idx_selector + "&id={$item.id}";
+		$("#selector-btn-refresh").click();
+		$("#span-week-selector").text("第" + week_idx_selector + "周");
+	});
+});
+</script>

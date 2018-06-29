@@ -481,4 +481,26 @@ $(document).ready(function() {
 		});
 	}
 	loadItem();
+	function loadItemByUrl(css_elem, load_url) {
+		if(typeof load_url =='undefined') {
+			return false;
+		}
+		$(css_elem).html('<div class="loading-icon"></div>');
+		$.ajax({
+			url: load_url,
+			success: function(data) {
+				if(data.code == 0) {
+					$(".refreshing").removeClass("refreshing");
+					$(css_elem).html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;登录失效，请刷新页面</div>');
+				} else {					
+					$(".refreshing").removeClass("refreshing");
+					$(css_elem).html(data);
+				}
+			}, 
+			error: function() {
+				$(".refreshing").removeClass("refreshing");
+				$(css_elem).html('<div class="list-empty"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;发生错误</div>');
+			}
+		});
+	}
 });

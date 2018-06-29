@@ -146,10 +146,17 @@ class Table extends Model {
 			$total = $cor['c_stu'];
 			foreach ($arr as $ai ) {
 				$item = db('machine')->where('id', $ai)->find();
-				$cnt = $item['mac'];
+				$cnt += $item['mac'];
 			}
 			if($cnt <= $total) {
 				throw new MyException('所选机房不足以容纳该班学生', -666);
+			}
+			
+			$m_rest = new Rest();
+			$rest_list = $m_rest->getEnabledItem($term['code']);
+			
+			if($this->checkRest($term, $rest_list, $week, $day, $section)) {
+				throw new MyException('该时段为不开放时段', -677);
 			}
 			
 			$this->where('id', $id)
@@ -168,8 +175,28 @@ class Table extends Model {
 		}
 	}
 	
+	public function checkRest($term, $list, $week, $day, $section) {
+		$d_term = date_create($term['start']);
+		$itm = $week * 8 * 10 + $day * 10 + $section;
+		foreach($list as $ri) {			
+			$d_now_s = date_create($ri['start']);
+			$d_now_e = date_create($ri['end']);
+			$_day_s = (date('w', date_timestamp_get($d_now_s)) + 6) % 7 + 1;
+			$_day_e = (date('w', date_timestamp_get($d_now_e)) + 6) % 7 + 1;
+			$differ_s = floor(date_diff($d_term, $d_now_s)->format('%a') / 7) + 1;
+			$differ_e = floor(date_diff($d_term, $d_now_e)->format('%a') / 7) + 1;
+			$ck_s = $differ_s * 8 * 10 + $_day_s * 10 + $ri['s_sec'];
+			$ck_e = $differ_e * 8 * 10 + $_day_e * 10 + $ri['e_sec'];
+			if($itm >= $ck_s && $itm <= $ck_e) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public function getIg($term) {
 		return $list = $this->where([
+				'term' => $term,
 				'dispatch' => 1,
 				'flag' => 0,
 		])->select();
@@ -191,6 +218,8 @@ class Table extends Model {
 		$m_course = new Course();
 		$m_plan = new Plan();
 		$m_rest = new Rest();
+		$rest_list = $m_rest->getEnabledItem($term);
+		$term_obj = Term::getCurTerm();
 		$all_mac = $m_machine->where([])->select();
 		$all_dat = [];
 		// week
@@ -302,6 +331,9 @@ class Table extends Model {
 									'dispatch' => 1,
 									'flag' => 0,
 							];
+						}
+						if($this->checkRest($term_obj, $rest_list, $week, $day, $section)) {
+							continue;
 						}
 						if(!empty($lst)) {
 							array_push($all_dat, $lst);

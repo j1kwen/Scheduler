@@ -289,4 +289,11 @@ return [
 			//软件专业课
 			'5' => '5',
 	],
+		
+	//pdf
+	'pdf' => [
+			'exec_win' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"',
+			'exec_unix' => 'wkhtmltopdf',
+			'param' => '--page-size A3 --margin-left 5mm --margin-right 5mm',
+	],
 ];

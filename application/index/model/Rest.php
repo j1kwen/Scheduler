@@ -20,7 +20,7 @@ class Rest extends Model {
 		return $this->where('term', $term)->select();
 	}
 	
-	public function addItem($term, $date1, $date2, $remark='') {
+	public function addItem($term, $date1, $date2, $sec1, $sec2, $remark='') {
 		try {
 // 			$all_dat = $this->where('term', $term)->select();
 // 			$a_sec1 = strtotime($date1);
@@ -32,7 +32,9 @@ class Rest extends Model {
 			$this->data([
 					'term' => $term,
 					'start' => $date1,
+					's_sec' => $sec1,
 					'end' => $date2,
+					'e_sec' => $sec2,
 					'remark' => $remark,
 			]);
 			$this->save();
@@ -49,6 +51,17 @@ class Rest extends Model {
 		}
 	}
 	
+	public function getEnabledItem($term) {
+		try {
+			return $this->where([
+					'term'=>$term,
+					'apply' => 1,
+			])->select();
+		} catch (\think\Exception $e) {
+			throw $e;
+		}
+	}
+	
 	public function apply($term, $id) {
 		$item = $this->where('id', $id)->find();
 		if($item['term'] != $term) {
@@ -56,17 +69,22 @@ class Rest extends Model {
 		}
 		$st = $item['start'];
 		$ed = $item['end'];
+		$s_sec = $item['s_sec'];
+		$e_sec = $item['e_sec'];
 		$tm1 = Term::getDifferFromTerm($st);
 		$tm2 = Term::getDifferFromTerm($ed);
 		$m_table = new Table();
-		$list = $m_table->where('term', $term)->order('num','asc')->select();
+		$list = $m_table->where('term', $term)->order([
+				'num' => 'asc',
+				'section' => 'asc',
+		])->select();
 		$dat_all = [];
 		$cnt = 0;
 		foreach($list as $item) {
-			if($item['num'] > $tm2) {
+			if(($item['num'] == $tm2 && $item['section'] > $e_sec) || $item['num'] > $tm2) {
 				break;
 			}
-			if($item['num'] >= $tm1 && $item['flag'] == 1) {
+			if($item['num'] >= $tm1 && $item['section'] >= $s_sec && $item['flag'] == 1) {
 				$dat_item = [
 						'id' => $item['id'],
 						'place' => '',
@@ -83,5 +101,14 @@ class Rest extends Model {
 					'apply' => 1,
 		]);
 		return $cnt;
+	}
+	public static function deleteItemByTerm($term) {
+		try {
+			db('rest')->where([
+					'term' => $term,
+			])->delete();
+		} catch (Exception $e) {
+			throw $e;
+		}
 	}
 }

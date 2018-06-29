@@ -67,6 +67,13 @@
 </script>
 {include file="public/footer" /}
 <script src="__STATIC__/js/login.js"></script>
+<script>
+$(document).ready(function() {
+	$("#login-without-user").click(function() {
+		location.href="{:url('index/login/tour')}";
+	});
+});
+</script>
 </body>
 
 </html>

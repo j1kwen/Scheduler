@@ -1,0 +1,186 @@
+<style>
+.tb-full {
+	width: 100%;
+	text-align: center;
+	table-layout: fixed;
+}
+.tb-full td {
+  border-style: solid;
+  height: auto;
+}
+.tb-full .tb-cell-room {
+	width: 25%;
+    float: left;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+.tb-full .cls-view {
+	cursor: pointer;
+	background-color: #d9edf7;
+}
+</style>
+<table class="tb-full">
+  <tr>
+  <td style="width: 40px;"></td>
+  {foreach $weeks as $wk}
+  <td>{$wk}</td>
+  {/foreach}
+  </tr>
+{for start="1" end="9" comparison="elt" step="2" name="f_sec" }
+  <tr>
+    <td>{$f_sec}-{$f_sec+1}节</td>
+  {for start="0" end="6" comparison="elt" step="1" name="f_week" }
+    <td>
+      {foreach $list[$f_week][$f_sec] as $item}
+      <div class="tb-cell-room {:empty($item['cls'])?'':'cls-view'}" data-move="{$item['rm']}" data-id="{$item['csid']}" data-self-id="{$item['id']}" href="javascript:void(0)">
+        {$item['name']}<br/>
+        {if condition="empty($item['cls'])"}
+        &nbsp;
+        {else /}
+        <strong>{$item['cls']}</strong>
+        {/if}
+      </div>
+      {/foreach}
+    </td>
+  {/for}
+  </tr>
+{/for}
+</table>
+<script>
+$(document).ready(function() {
+	function showErrorAlert(title, content) {
+		$.alert({
+			keyboardEnabled: true,
+			backgroundDismiss: true,
+			icon: 'glyphicon glyphicon-remove-circle',
+			title: title,
+			content: content,
+			type: 'red',
+			buttons: {
+				确定: {
+					btnClass: 'btn btn-danger',
+				},
+			},
+		});
+	}
+	$(".cls-view").click(function() {
+		var _csid = $(this).attr('data-id');
+		var _btn_cls = $(this).attr('data-move');
+		var _sf_id = $(this).attr('data-self-id');
+		var _url = "{:url('index/course/details')}";
+		$.ajax({
+			url: _url,
+			type: "POST",
+			data: "code=" + _csid,
+			success: function(data) {
+				$.alert({
+					keyboardEnabled: true,
+					backgroundDismiss: true,
+					icon: 'glyphicon glyphicon-eye-open',
+					title: '详细信息',
+					content: data,
+					type: 'blue',
+					buttons: {
+						迁移: {
+							btnClass: 'btn btn-danger ' + _btn_cls,
+							action: function() {
+								$.alert({
+									keyboardEnabled: true,
+									backgroundDismiss: true,
+									icon: 'glyphicon glyphicon-share-alt',
+									title: '迁移',
+									content: "url:{:url('index/table/move2')}?id=" + _sf_id,
+									type: 'orange',
+									columnClass: 'col-md-12',
+									buttons: {
+										关闭: {
+											btnClass: 'btn btn-default',
+										},
+										迁移: {
+											btnClass: 'btn btn-warning',
+											action: function() {
+												var select_date_id = $("#move-date-area").attr("data-id");
+												if(select_date_id == "") {
+													showErrorAlert("错误", "未选择迁移位置");
+													return false;
+												}
+												var select_date = $("#move-date-area").html();
+												var select_idx = $("#move-idx-area").html();
+												var date_sps = select_date_id.split("-");
+												$.confirm({
+													type: 'orange',
+													icon: 'glyphicon glyphicon-question-sign',
+													title: '迁移课程',
+													content: '确定要将课程迁移至'+select_date+'的'+select_idx+'机房吗？',
+													buttons: {
+														取消: {
+															btnClass: "btn btn-default",
+														},
+														确定: {
+															btnClass: "btn btn-warning",
+															action: function() {
+																var _mac_list = "";
+																$("#move-idx-area span.selector-cell").each(function(){
+																	_mac_list += "," + $(this).attr("data-id");
+																});
+																var _dat = {
+																	id: _sf_id,
+																	week: date_sps[0],
+																	day: date_sps[1],
+																	section: date_sps[2],
+																	mac: _mac_list.substr(1),
+																};
+																$.ajax({
+																	url: "{:url('index/table/domove')}",
+																	type: "POST",
+																	data: _dat,
+																	success: function(data) {
+																		if(data.success) {
+																			$.alert({
+																				keyboardEnabled: true,
+																				backgroundDismiss: true,
+																				icon: 'glyphicon glyphicon-ok',
+																				title: '成功',
+																				content: data.msg,
+																				type: 'green',
+																				buttons: {
+																					确定: {
+																						btnClass: 'btn btn-success',
+																						action: function() {
+																							location.reload();
+																						}
+																					},
+																				},
+																			});
+																		} else {
+																			showErrorAlert('错误', data.msg);
+																		}
+																	},
+																	error: function() {
+																		showErrorAlert('错误', '请求失败，请重试！');
+																	}
+																});
+															},
+														}
+													}
+												});
+												return false;
+											},
+										},
+									},
+								});
+							},
+						},
+						完成: {
+							btnClass: 'btn btn-primary',
+						},
+					},
+				});
+			},
+			error: function() {
+				showErrorAlert('错误', '请求失败，请重试！');
+			}
+		});
+	});
+});
+</script>
